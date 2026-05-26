@@ -12,3 +12,4 @@ I want to build a portfolia to show the things i create.
 Kedrick Leon, What is one rule or constraint you think is
 most important when using AI tools for coding? 
 I believe the one rule when using AI tools for coding is to cite where it got the information from or that you used ai for help on certain work.
+## Collaborator Kedrick Leon
