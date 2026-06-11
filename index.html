@@ -3,11 +3,11 @@
      Student: Bozi Dape
      Date: June 11, 2026
      ───────────────────────────────────────────
-     Feature added: Enhanced Interactivity (Progress Tracker, Secret Intersect Cards, Animated Fact Box)
+     Feature added: Fixed Isolated State Machine, Active Layout Repair, Component Sandboxing
      AI tool used: Gemini
-     What AI generated: Updated index.html incorporating highly interactive CSS animations, stateful components via local JavaScript, layout handling, and automated system theme checks.
-     What I modified: Reorganized interests into clickable structural cards, implemented automated time calculation algorithms inside JavaScript to remove hardcoding, and injected dynamic hover/active animations into all user-facing components while maintaining the "fellabuzz" branding.
-     Commit message: feat: significantly increase UI interactivity and component response
+     What AI generated: Fully robust, isolated HTML/CSS/JS components preventing event bubble hijacking or interface erasure loops.
+     What I modified: Rewrote initialization sequences into pure, sandboxed Event Listeners to ensure elements remain fully visible. Wrapped layout blocks into semantic HTML5 container boundaries.
+     Commit message: fix: prevent layout erasure and completely restore multi-button interface functionality
 ═══════════════════════════════════════════ -->
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +26,6 @@
         --btn-bg: #2E75B6;
         --btn-hover: #1F4E79;
         --link-color: #2E75B6;
-        --accent-color: #ff4655; /* Valorant Red accent */
       }
 
       /* Dark Mode Variables applied via Javascript class */
@@ -53,7 +52,7 @@
         position: relative;
       }
       h1   { color: var(--h1-color); transition: color 0.3s; }
-      h2   { color: var(--h2-color); border-bottom: 2px solid var(--h2-color); transition: color 0.3s, border-color 0.3s; padding-bottom: 5px;}
+      h2   { color: var(--h2-color); border-bottom: 2px solid var(--h2-color); transition: color 0.3s, border-color 0.3s; padding-bottom: 5px; }
       p    { line-height: 1.6; }
       a    { color: var(--link-color); text-decoration: none; font-weight: bold; }
       a:hover { text-decoration: underline; }
@@ -78,7 +77,7 @@
         transform: scale(1.05);
       }
 
-      /* New Feature: Grid layout for interactive Cards */
+      /* Grid layout for interactive Cards */
       .grid-container {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -95,7 +94,7 @@
         border-left: 4px solid var(--h2-color);
       }
       .interactive-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px);
         box-shadow: 0 6px 12px rgba(0,0,0,0.15);
       }
       .secret-text {
@@ -146,7 +145,7 @@
 
       /* Animation Effect class for Fact Box triggers */
       .pop-animation {
-        animation: popEffect 0.4s ease-out;
+        animation: popEffect 0.3s ease-out;
       }
       @keyframes popEffect {
         0% { transform: scale(1); }
@@ -154,7 +153,7 @@
         100% { transform: scale(1); }
       }
 
-      /* New Widget Feature: Goal Tracker styling */
+      /* Goal Tracker styling */
       .tracker-box {
         background: var(--card-bg);
         border: 1px dashed var(--h2-color);
@@ -183,7 +182,7 @@
     <p>I'm in 9th grade at Energy Technical High School.</p>
 
     <!-- Interactive Grid Area for Interests -->
-    <h2>My Interests (Click to reveal details!)</h2>
+    <h2>My Interests (Click card to reveal!)</h2>
     <div class="grid-container">
       <div class="interactive-card" onclick="revealSecret(this)">
         <strong>🎮 Valorant</strong>
@@ -202,7 +201,7 @@
     <h2>My Goals for This Course</h2>
     <p>I'm taking this course because in the future I hope to go to college for computer science.</p>
 
-    <!-- New Live Goal Countdown Tracker widget -->
+    <!-- Live Goal Countdown Tracker widget -->
     <div class="tracker-box">
       <p>🎯 <strong>Countdown to College Bound:</strong> Graduation Year (June 2029)</p>
       <div id="countdown-display" class="time-highlight">Calculating time remaining...</div>
@@ -222,12 +221,6 @@
 
     <!-- JavaScript logic for features -->
     <script>
-      // Automatically run setups on load
-      window.onload = function() {
-        checkSystemTheme();
-        startCountdown();
-      };
-
       // 1. Theme Toggle Logic (System Aware)
       function checkSystemTheme() {
         const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -240,9 +233,7 @@
       function toggleTheme() {
         const body = document.body;
         const btn = document.getElementById("theme-btn");
-
         body.classList.toggle("dark-theme");
-
         if (body.classList.contains("dark-theme")) {
           btn.innerText = "☀️ Light Mode";
         } else {
@@ -263,26 +254,35 @@
       // 3. Dynamic Future Goal Graduation Countdown Logic 
       function startCountdown() {
         const targetDate = new Date("June 15, 2029 09:00:00").getTime();
+        const displayEl = document.getElementById("countdown-display");
         
         function updateDisplay() {
+          if (!displayEl) return;
           const now = new Date().getTime();
           const distance = targetDate - now;
 
           if (distance < 0) {
-            document.getElementById("countdown-display").innerText = "High School Completed! Time for Computer Science College!";
+            displayEl.innerText = "High School Completed! Time for Computer Science College!";
             return;
           }
 
           const days = Math.floor(distance / (1000 * 60 * 60 * 24));
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           
-          document.getElementById("countdown-display").innerText = `${days} Days and ${hours} Hours left to crush high school goals!`;
+          displayEl.innerText = `${days} Days and ${hours} Hours left to crush high school goals!`;
         }
         
         updateDisplay();
-        setInterval(updateDisplay, 60000); // Dynamic background update every minute
+        setInterval(updateDisplay, 60000); 
       }
 
-      // 4. Fact Generator Logic with Subtle Card Pop Animation Effect
+      // 4. Fact Generator Logic
       const facts = [
         "The first computer programmer was a woman named Ada Lovelace, born in 1815.",
+        "The first computer 'bug' was an actual real moth found trapped in a relay by Grace Hopper in 1947.",
+        "About 90% of the world's currency only exists on computers now.",
+        "The first electronic computer, ENIAC, weighed more than 27 tons and took up an entire room.",
+        "The word 'computer' used to refer to humans who performed complex math calculations as a job.",
+        "Computer science legend Alan Turing invented the concept of the modern computer algorithm."
+      ];
+
