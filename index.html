@@ -196,8 +196,8 @@
     <!-- Shared Navigation & Theme Control -->
     <div class="header-container">
       <nav class="nav-links">
-        <a href="#home" onclick="showPage('welcome-page')" id="nav-welcome-page" class="active">🏠 Home</a>
-        <a href="#projects" onclick="showPage('projects-page')" id="nav-projects-page">💻 Course Projects</a>
+        <a onclick="showPage('welcome-page')" id="nav-welcome-page" class="active">🏠 Home</a>
+        <a onclick="showPage('projects-page')" id="nav-projects-page">💻 Course Projects</a>
       </nav>
       <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 Dark Mode</button>
     </div>
@@ -213,7 +213,7 @@
       <h2>My Interests</h2>
       <p>Click a badge to view my stats or favorites details:</p>
       <div>
-        <span class="hobby-badge" onclick="showHobbyDetails('Valorant', '🎮 Rank: Gold | Main Agents: Jett & Reyna | Playstyle: Entry Fragger')">🎮 Valorant</span>
+        <span class="hobby-badge" onclick="showValTracker()">🎮 Valorant</span>
         <span class="hobby-badge" onclick="showHobbyDetails('Soccer', '⚽ Position: Midfielder / Winger | Favorite Club: Real Madrid | Cleats: Nike Mercurial')">⚽ Soccer</span>
         <span class="hobby-badge" onclick="showHobbyDetails('Volleyball', '🏐 Position: Outside Hitter | Skill focus: Jump Serving & Spiking')">🏐 Volleyball</span>
       </div>
@@ -246,3 +246,5 @@
         </div>
         <div class="form-group">
           <label for="visitor-msg">Message:</label>
+          <textarea id="visitor-msg" rows="3" placeholder="Type something..." oninput="updateLivePreview()"></textarea>
+        </div>
