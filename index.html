@@ -1,325 +1,172 @@
+<!-- ═══════════════════════════════════════════
+     CODE HONESTY DECLARATION
+     Student: Bozi Dape
+     Date: June 5, 2026
+     ───────────────────────────────────────────
+     Feature added: Random Quote/Fact Generator & Light/Dark Mode Toggle
+     AI tool used: Gemini
+     What AI generated: A complete, self-contained index.html file that combines layout structure, CSS design variables for theme switching, and JavaScript logic for a clickable computer science fact generator and a responsive dark mode theme switch.
+     What I modified: To clean up the original layout and implement the new features seamlessly, several specific code modifications were required. First, all placeholder brackets [...] were removed to present the text as a finished, professional website, and hardcoded colors were replaced with flexible CSS design variables to make the theme switching possible. Next, minor typos were corrected for better readability—such as fixing 'valaorant' to 'Valorant' and capitalizing 'Computer Science'—while the generic username placeholders were updated directly to my real GitHub handle, fellabuzz. Finally, instead of splitting the code into separate external files, everything was intentionally kept inside a single index.html document to ensure the website remains easy to manage and host.
+     What I did NOT understand: How to build out complex backend API connections to fetch live facts from an external database, which is why we used a local JavaScript array of facts instead.
+     Commit message: feat: add dark mode toggle and computer science fact generator
+═══════════════════════════════════════════ -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <!--
-    =======================================================================
-    CODE HONESTY & METADATA BLOCK
-    Student Name:     Bozi Dape
-    GitHub Username:  fellabuzz
-    Custom Features:  - Glassmorphic UI design system with hardware-accelerated filters
-                      - Persistent, state-retaining client-side SPA routing via localStorage
-                      - Adaptive dual-theme architecture with auto-updating icons and text
-                      - Micro-interactions & animations on cards and interactive buttons
-                      - Secure external link routing using strict isolation protocols
-                      - Stateful inline JavaScript Computer Science Random Fact Engine
-    =======================================================================
-    -->
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bozi Dape Portfolio</title>
+    <title>Bozi Dape's Website</title>
     <style>
-        /* --- DESIGN SYSTEM & CSS VARIABLES --- */
-        :root {
-            --bg-gradient: linear-gradient(135deg, #f0f4f8, #d9e2ec);
-            --text-color: #102a43;
-            --card-bg: rgba(255, 255, 255, 0.85);
-            --card-border: rgba(255, 255, 255, 0.4);
-            --accent-color: #2e75b6;
-            --accent-gradient: linear-gradient(45deg, #2e75b6, #1992d4);
-            --shadow-color: rgba(16, 42, 67, 0.08);
-            --nav-bg: rgba(255, 255, 255, 0.7);
-            --card-hover: rgba(255, 255, 255, 0.95);
-        }
+      /* Base Variables for smooth color switching */
+      :root {
+        --bg-color: #f5f5f5;
+        --text-color: #333333;
+        --h1-color: #1F4E79;
+        --h2-color: #2E75B6;
+        --card-bg: #ffffff;
+        --btn-bg: #2E75B6;
+        --btn-hover: #1F4E79;
+        --link-color: #2E75B6;
+      }
 
-        body.dark-theme {
-            --bg-gradient: linear-gradient(135deg, #0f172a, #1e293b);
-            --text-color: #f1f5f9;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --accent-color: #38bdf8;
-            --accent-gradient: linear-gradient(45deg, #38bdf8, #818cf8);
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --nav-bg: rgba(30, 41, 59, 0.6);
-            --card-hover: rgba(30, 41, 59, 0.85);
-        }
+      /* Dark Mode Variables applied via Javascript class */
+      body.dark-theme {
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --h1-color: #6ba4e8;
+        --h2-color: #4f9be3;
+        --card-bg: #1e1e1e;
+        --btn-bg: #4f9be3;
+        --btn-hover: #6ba4e8;
+        --link-color: #4f9be3;
+      }
 
-        /* --- GLOBAL RESETS & BASE STYLES --- */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+      /* Layout Styles using CSS Variables */
+      body { 
+        font-family: Arial, sans-serif; 
+        max-width: 800px;
+        margin: 0 auto; 
+        padding: 20px; 
+        background: var(--bg-color); 
+        color: var(--text-color);
+        transition: background 0.3s, color 0.3s;
+        position: relative;
+      }
+      h1   { color: var(--h1-color); transition: color 0.3s; }
+      h2   { color: var(--h2-color); border-bottom: 2px solid var(--h2-color); transition: color 0.3s, border-color 0.3s; }
+      p    { line-height: 1.6; }
+      a    { color: var(--link-color); text-decoration: none; font-weight: bold; }
+      a:hover { text-decoration: underline; }
 
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            color: var(--text-color);
-            line-height: 1.7;
-            min-height: 100vh;
-            padding-bottom: 60px;
-            transition: background 0.3s ease, color 0.3s ease;
-        }
+      /* Theme Toggle Button Layout */
+      .theme-toggle-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+      }
+      .theme-btn {
+        background: var(--card-bg);
+        color: var(--text-color);
+        border: 1px solid var(--text-color);
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
 
-        /* --- FLOATING PILL HEADER --- */
-        .global-header {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 600px;
-            background: var(--nav-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            border-radius: 50px;
-            padding: 8px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 10px 30px var(--shadow-color);
-            z-index: 1000;
-            transition: background 0.3s ease, border 0.3s ease;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 8px;
-        }
-
-        .nav-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-color);
-            padding: 8px 16px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .nav-btn:hover {
-            background: rgba(128, 128, 128, 0.15);
-        }
-
-        .nav-btn.active {
-            background: var(--accent-color);
-            color: #ffffff;
-        }
-
-        body.dark-theme .nav-btn.active {
-            color: #0f172a;
-            font-weight: 600;
-        }
-
-        .theme-toggle {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-color);
-            padding: 8px 14px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            border-radius: 30px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px var(--shadow-color);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-            background: var(--card-hover);
-        }
-
-        /* --- LAYOUT CONFIGURATION --- */
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 120px auto 40px auto;
-        }
-
-        /* Core Visibility Mapping */
-        .view-section {
-            display: none;
-        }
-
-        .view-section.active-view {
-            display: block !important;
-            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- GLASSMORPHIC CARDS --- */
-        .glass-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 32px var(--shadow-color);
-            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .glass-card:hover {
-            transform: translateY(-2px);
-            background: var(--card-hover);
-            box-shadow: 0 12px 40px var(--shadow-color);
-        }
-
-        /* --- TYPOGRAPHY ELEMENTS --- */
-        h1.gradient-heading {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 24px;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-fill-color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        h2 {
-            font-size: 1.4rem;
-            margin-bottom: 12px;
-            color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        p {
-            margin-bottom: 16px;
-            font-size: 1.05rem;
-        }
-
-        /* --- LISTS & TRACKERS --- */
-        ul {
-            list-style: none;
-        }
-
-        li {
-            position: relative;
-            padding-left: 24px;
-            margin-bottom: 12px;
-        }
-
-        li::before {
-            content: "✦";
-            position: absolute;
-            left: 0;
-            color: var(--accent-color);
-        }
-
-        /* --- BUTTONS & INTERACTIVE LINKS --- */
-        .inline-link {
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 2px solid transparent;
-            transition: border-color 0.3s ease;
-        }
-
-        .inline-link:hover {
-            border-color: var(--accent-color);
-        }
-
-        .card-link-wrapper {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            padding: 10px 20px;
-            background: var(--accent-gradient);
-            color: #ffffff !important;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 4px 15px var(--shadow-color);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        body.dark-theme .card-link-wrapper {
-            color: #0f172a !important;
-        }
-
-        .card-link-wrapper:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px var(--shadow-color);
-        }
-
-        .action-btn {
-            background: var(--accent-gradient);
-            color: #ffffff;
-            border: none;
-            padding: 12px 24px;
-            font-size: 1rem;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px var(--shadow-color);
-            transition: all 0.3s ease;
-            margin-top: 12px;
-        }
-
-        body.dark-theme .action-btn {
-            color: #0f172a;
-        }
-
-        .action-btn:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        .fact-display {
-            margin-top: 16px;
-            padding: 16px;
-            background: rgba(128, 128, 128, 0.08);
-            border-left: 4px solid var(--accent-color);
-            border-radius: 0 8px 8px 0;
-            font-style: italic;
-            min-height: 56px;
-        }
-
-        /* --- MOBILE STYLING RESPONSIVENESS --- */
-        @media (max-width: 600px) {
-            .global-header {
-                width: 95%;
-                padding: 6px 12px;
-            }
-            .nav-btn {
-                padding: 6px 12px;
-                font-size: 0.85rem;
-            }
-            .theme-toggle {
-                padding: 6px 10px;
-                font-size: 0.75rem;
-            }
-            .container {
-                margin-top: 100px;
-            }
-            h1.gradient-heading {
-                font-size: 2rem;
-            }
-        }
+      /* Generator Card Styling */
+      .generator-box {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        text-align: center;
+        margin: 20px 0;
+        transition: background 0.3s;
+      }
+      .generator-box p {
+        font-size: 1.2rem;
+        font-style: italic;
+        min-height: 50px;
+      }
+      .generator-btn {
+        background-color: var(--btn-bg);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      .generator-btn:hover {
+        background-color: var(--btn-hover);
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
 
-    <!-- GLOBAL FLOATING PILL HEADER -->
-    <header class="global-header">
-        <nav class="nav-links">
-            <button class="nav-btn" onclick="showPage('home')" id="btn-home">🏠 Home</button>
+    <!-- Theme Toggle Button UI -->
+    <div class="theme-toggle-container">
+      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 Dark Mode</button>
+    </div>
+
+    <h1>Hi, I'm Bozi Dape!</h1>
+
+    <h2>About Me</h2>
+    <p>I'm in 9th grade at Energy Technical High School.</p>
+
+    <h2>My Interests</h2>
+    <p>I enjoy playing Valorant, soccer, and volleyball.</p>
+
+    <h2>My Goals for This Course</h2>
+    <p>I'm taking this course because in the future I hope to go to college for computer science.</p>
+
+    <!-- Random Quote or Fact Generator -->
+    <h2>Fun Fact Generator</h2>
+    <div class="generator-box">
+      <p id="fact-display">Click the button below to see a cool computer science fact!</p>
+      <button class="generator-btn" onclick="generateFact()">Generate Fact</button>
+    </div>
+
+    <h2>My GitHub</h2>
+    <p>Check out my projects: 
+      <a href="https://github.com">fellabuzz</a>
+    </p>
+
+    <!-- JavaScript logic for features -->
+    <script>
+      // 1. Theme Toggle Logic
+      function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById("theme-btn");
+
+        // Switch the dark class on the body element
+        body.classList.toggle("dark-theme");
+
+        // Update button text icon based on current mode
+        if (body.classList.contains("dark-theme")) {
+          btn.innerText = "☀️ Light Mode";
+        } else {
+          btn.innerText = "🌙 Dark Mode";
+        }
+      }
+
+      // 2. Fact Generator Logic
+      const facts = [
+        "The first computer programmer was a woman named Ada Lovelace, born in 1815.",
+        "The first computer 'bug' was an actual real moth found trapped in a relay by Grace Hopper in 1947.",
+        "About 90% of the world's currency only exists on computers now.",
+        "The first electronic computer, ENIAC, weighed more than 27 tons and took up an entire room.",
+        "The word 'computer' used to refer to humans who performed complex math calculations as a job.",
+        "Computer science legend Alan Turing invented the concept of the modern computer algorithm."
+      ];
+
+      function generateFact() {
+        const randomIndex = Math.floor(Math.random() * facts.length);
+        document.getElementById("fact-display").innerText = facts[randomIndex];
+      }
+    </script>
+  </body>
+</html>
