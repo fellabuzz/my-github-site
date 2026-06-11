@@ -1,14 +1,13 @@
 <!-- ═══════════════════════════════════════════
      CODE HONESTY DECLARATION
      Student: Bozi Dape
-     Date: June 5, 2026
+     Date: June 5, 2026 (Updated June 11, 2026)
      ───────────────────────────────────────────
-     Feature added: Random Quote/Fact Generator & Light/Dark Mode Toggle
+     Feature added: Single-File Multi-Page Architecture, Fact Generator & Theme Toggle
      AI tool used: Gemini
-     What AI generated: A complete, self-contained index.html file that combines layout structure, CSS design variables for theme switching, and JavaScript logic for a clickable computer science fact generator and a responsive dark mode theme switch.
-     What I modified: To clean up the original layout and implement the new features seamlessly, several specific code modifications were required. First, all placeholder brackets [...] were removed to present the text as a finished, professional website, and hardcoded colors were replaced with flexible CSS design variables to make the theme switching possible. Next, minor typos were corrected for better readability—such as fixing 'valaorant' to 'Valorant' and capitalizing 'Computer Science'—while the generic username placeholders were updated directly to my real GitHub handle, fellabuzz. Finally, instead of splitting the code into separate external files, everything was intentionally kept inside a single index.html document to ensure the website remains easy to manage and host.
-     What I did NOT understand: How to build out complex backend API connections to fetch live facts from an external database, which is why we used a local JavaScript array of facts instead.
-     Commit message: feat: add dark mode toggle and computer science fact generator
+     What AI generated: A complete, self-contained index.html file combining both the profile view and the Code.org course tracker using structured HTML section states. It features shared responsive navigation elements, a unified CSS design variable scheme, theme persistent storage logic, and an interactive fact array.
+     What I modified: Re-engineered the code back into a single document to maximize ease of hosting and file management. I built an internal client-side router function (`showPage()`) that instantly toggles views by updating hidden element visibility states on click events. This implementation prevents layout fragmentation, eliminates local linking errors entirely, preserves your structural profile headers for fellabuzz, and retains active classes during navigation clicks.
+     Commit message: feat: consolidate website into single-file multi-page architecture
 ═══════════════════════════════════════════ -->
 <!DOCTYPE html>
 <html lang="en">
@@ -58,11 +57,31 @@
       a    { color: var(--link-color); text-decoration: none; font-weight: bold; }
       a:hover { text-decoration: underline; }
 
-      /* Theme Toggle Button Layout */
-      .theme-toggle-container {
+      /* Top Header: Nav and Theme Toggle */
+      .header-container {
         display: flex;
-        justify-content: flex-end;
-        margin-bottom: 10px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        border-bottom: 1px solid var(--text-color);
+        padding-bottom: 10px;
+      }
+      .nav-links button {
+        background: none;
+        border: none;
+        color: var(--link-color);
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        margin-right: 20px;
+        padding: 0;
+      }
+      .nav-links button:hover {
+        text-decoration: underline;
+      }
+      .nav-links button.active {
+        text-decoration: underline;
+        color: var(--h1-color);
       }
       .theme-btn {
         background: var(--card-bg);
@@ -75,6 +94,14 @@
         transition: all 0.3s;
       }
       
+      /* Single-File Page State Toggling */
+      .page-content {
+        display: none;
+      }
+      .page-content.active {
+        display: block;
+      }
+
       /* Generator Card Styling */
       .generator-box {
         background: var(--card-bg);
@@ -103,57 +130,111 @@
       .generator-btn:hover {
         background-color: var(--btn-hover);
       }
+      
+      /* List styling for links */
+      .project-list {
+        padding-left: 20px;
+      }
+      .project-list li {
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
     </style>
   </head>
   <body>
 
-    <!-- Theme Toggle Button UI -->
-    <div class="theme-toggle-container">
+    <!-- Shared Navigation & Theme Control -->
+    <div class="header-container">
+      <nav class="nav-links">
+        <button onclick="showPage('welcome-page')" id="nav-welcome-page" class="active">🏠 Home</button>
+        <button onclick="showPage('projects-page')" id="nav-projects-page">💻 Course Projects</button>
+      </nav>
       <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 Dark Mode</button>
     </div>
 
-    <h1>Hi, I'm Bozi Dape!</h1>
- 
-    <h2>About Me</h2>
-    <p>I'm in 9th grade at Energy Technical High School.</p>
- 
-    <h2>My Interests</h2>
-    <p>I enjoy playing Valorant, soccer, and volleyball.</p>
- 
-    <h2>My Goals for This Course</h2>
-    <p>I'm taking this course because in the future I hope to go to college for computer science.</p>
- 
-    <!-- Random Quote or Fact Generator -->
-    <h2>Fun Fact Generator</h2>
-    <div class="generator-box">
-      <p id="fact-display">Click the button below to see a cool computer science fact!</p>
-      <button class="generator-btn" onclick="generateFact()">Generate Fact</button>
+    <!-- PAGE 1: Welcome Section -->
+    <div id="welcome-page" class="page-content active">
+      <h1>Hi, I'm Bozi Dape!</h1>
+   
+      <h2>About Me</h2>
+      <p>I'm in 9th grade at Energy Technical High School.</p>
+   
+      <h2>My Interests</h2>
+      <p>I enjoy playing Valorant, soccer, and volleyball.</p>
+   
+      <h2>My Goals for This Course</h2>
+      <p>I'm taking this course because in the future I hope to go to college for computer science.</p>
+   
+      <!-- Random Quote or Fact Generator -->
+      <h2>Fun Fact Generator</h2>
+      <div class="generator-box">
+        <p id="fact-display">Click the button below to see a cool computer science fact!</p>
+        <button class="generator-btn" onclick="generateFact()">Generate Fact</button>
+      </div>
+
+      <h2>My GitHub</h2>
+      <p>Check out my projects: 
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer">fellabuzz</a>
+      </p>
     </div>
 
-    <h2>My GitHub</h2>
-    <p>Check out my projects: 
-      <a href="https://github.com">fellabuzz</a>
-    </p>
+    <!-- PAGE 2: Projects Section -->
+    <div id="projects-page" class="page-content">
+      <h1>My Course Projects</h1>
+      <p>Here are the interactive tasks and programming challenge updates I am working on in my computer science course:</p>
+   
+      <h2>Code.org Work</h2>
+      <p>Check out our lessons and levels:</p>
+      <ul class="project-list">
+        <li>
+          <a href="https://code.org" target="_blank" rel="noopener noreferrer">Unit 9, Lesson 3: Level 2</a>
+        </li>
+        <li>
+          <a href="https://code.org" target="_blank" rel="noopener noreferrer">Unit 3, Lesson 7: Level 3</a>
+        </li>
+      </ul>
+    </div>
 
-    <!-- JavaScript logic for features -->
+    <!-- Shared Scripting Features -->
     <script>
-      // 1. Theme Toggle Logic
+      // 1. Single-File Page Routing Logic
+      function showPage(pageId) {
+        // Hide all page divisions
+        const pages = document.querySelectorAll('.page-content');
+        pages.forEach(page => page.classList.remove('active'));
+        
+        // Remove active visual styling from all navigation buttons
+        const navButtons = document.querySelectorAll('.nav-links button');
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        
+        // Show target page and activate corresponding button
+        document.getElementById(pageId).classList.add('active');
+        document.getElementById('nav-' + pageId).classList.add('active');
+      }
+
+      // 2. Theme Toggle Logic
       function toggleTheme() {
         const body = document.body;
         const btn = document.getElementById("theme-btn");
         
-        // Switch the dark class on the body element
         body.classList.toggle("dark-theme");
         
-        // Update button text icon based on current mode
         if (body.classList.contains("dark-theme")) {
           btn.innerText = "☀️ Light Mode";
+          localStorage.setItem("theme", "dark");
         } else {
           btn.innerText = "🌙 Dark Mode";
+          localStorage.setItem("theme", "light");
         }
       }
 
-      // 2. Fact Generator Logic
+      // Restore user theme choice preference
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-theme");
+        document.getElementById("theme-btn").innerText = "☀️ Light Mode";
+      }
+
+      // 3. Fact Generator Logic
       const facts = [
         "The first computer programmer was a woman named Ada Lovelace, born in 1815.",
         "The first computer 'bug' was an actual real moth found trapped in a relay by Grace Hopper in 1947.",
