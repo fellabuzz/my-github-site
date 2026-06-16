@@ -216,7 +216,7 @@
 
     <h2>My GitHub</h2>
     <p>Check out my projects: 
-      <a href="https://github.com" target="_blank" rel="noopener noreferrer">fellabuzz</a>
+      <a href="https://github.com/fellabuzz" target="_blank" rel="noopener noreferrer">fellabuzz</a>
     </p>
 
     <!-- JavaScript logic for features -->
@@ -243,12 +243,7 @@
 
       // 2. Click to Reveal Card Logic
       function revealSecret(cardElement) {
-        const secretText = cardElement.querySelector(".secret-text");
-        if (secretText.style.display === "block") {
-          secretText.style.display = "none";
-        } else {
-          secretText.style.display = "block";
-        }
+        card.classList.toggle('active');
       }
 
       // 3. Dynamic Future Goal Graduation Countdown Logic 
