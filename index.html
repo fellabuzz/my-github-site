@@ -1,14 +1,3 @@
-<!-- ═══════════════════════════════════════════
-     CODE HONESTY DECLARATION
-     Student: Bozi Dape
-     Date: June 11, 2026
-     ───────────────────────────────────────────
-     Feature added: Fixed Isolated State Machine, Active Layout Repair, Component Sandboxing
-     AI tool used: Gemini
-     What AI generated: Fully robust, isolated HTML/CSS/JS components preventing event bubble hijacking or interface erasure loops.
-     What I modified: Rewrote initialization sequences into pure, sandboxed Event Listeners to ensure elements remain fully visible. Wrapped layout blocks into semantic HTML5 container boundaries.
-     Commit message: fix: prevent layout erasure and completely restore multi-button interface functionality
-═══════════════════════════════════════════ -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -29,6 +18,7 @@
         --accent-glow: rgba(46, 117, 182, 0.2);
         --terminal-bg: #e2e8f0;
         --success-green: #2ebd59;
+        --ai-bot-bg: #1F4E79;
       }
 
       /* Dark Mode Variables applied via Javascript class */
@@ -44,6 +34,7 @@
         --accent-glow: rgba(79, 155, 227, 0.3);
         --terminal-bg: #1a1a1a;
         --success-green: #42d36f;
+        --ai-bot-bg: #4f9be3;
       }
 
       /* Styled Selection & Scrollbar */
@@ -72,7 +63,7 @@
         color: var(--text-color);
         transition: background 0.3s, color 0.3s;
         position: relative;
-        padding-bottom: 60px; /* Space for the floating bottom average */
+        padding-bottom: 80px; 
       }
       h1   { color: var(--h1-color); transition: color 0.3s; }
       h2   { color: var(--h2-color); border-bottom: 2px solid var(--h2-color); transition: color 0.3s, border-color 0.3s; padding-bottom: 5px; }
@@ -182,7 +173,7 @@
         font-size: 1.1rem;
       }
 
-      /* Sticky/Bottom Average Display Widget */
+      /* Bottom Average Display Widget */
       .bottom-bar {
         position: fixed;
         bottom: 0;
@@ -194,13 +185,134 @@
         text-align: center;
         font-weight: bold;
         font-size: 1.1rem;
-        z-index: 100;
+        z-index: 99;
         border-top: 3px solid var(--success-green);
         transition: background 0.3s;
       }
       .bar-highlight {
         color: var(--success-green);
         font-size: 1.2rem;
+      }
+
+      /* Mini AI Widget Interface Styling */
+      .ai-chat-launcher {
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+        background-color: var(--ai-bot-bg);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 20px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 101;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ai-chat-launcher:hover {
+        transform: scale(1.05);
+      }
+      .ai-chat-window {
+        position: fixed;
+        bottom: 120px;
+        right: 20px;
+        width: 340px;
+        height: 440px;
+        background: var(--card-bg);
+        border: 2px solid var(--h2-color);
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 101;
+      }
+      .ai-chat-header {
+        background: var(--ai-bot-bg);
+        color: white;
+        padding: 12px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .ai-chat-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      
+      /* Secret Config/API Box styling */
+      .ai-api-config {
+        background: var(--terminal-bg);
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+      }
+      .ai-api-config input {
+        flex: 1;
+        font-size: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 2px 6px;
+      }
+
+      .ai-chat-messages {
+        flex: 1;
+        padding: 12px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 0.9rem;
+      }
+      .ai-message {
+        padding: 8px 12px;
+        border-radius: 8px;
+        max-width: 80%;
+        line-height: 1.4;
+      }
+      .ai-message.bot {
+        background: var(--terminal-bg);
+        align-self: flex-start;
+      }
+      .ai-message.user {
+        background: var(--btn-bg);
+        color: white;
+        align-self: flex-end;
+      }
+      .ai-chat-input-area {
+        display: flex;
+        border-top: 1px solid var(--terminal-bg);
+        padding: 8px;
+        gap: 6px;
+      }
+      .ai-chat-input {
+        flex: 1;
+        border: 1px solid var(--h2-color);
+        border-radius: 4px;
+        padding: 6px 10px;
+        background: var(--bg-color);
+        color: var(--text-color);
+        outline: none;
+      }
+      .ai-chat-send {
+        background: var(--btn-bg);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0 14px;
+        cursor: pointer;
+        font-weight: bold;
       }
 
       /* Tracker & Project Badges */
@@ -283,7 +395,7 @@
       .game-target {
         width: 30px;
         height: 30px;
-        background: #ff4655; /* Valorant Red */
+        background: #ff4655;
         border: 3px solid white;
         border-radius: 50%;
         position: absolute;
@@ -322,10 +434,17 @@
         color: var(--h1-color);
       }
     </style>
+    
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.run/@google/genai"
+        }
+      }
+    </script>
   </head>
   <body onload="checkSystemTheme(); startCountdown();">
 
-    <!-- Theme Toggle Button UI -->
     <div class="theme-toggle-container">
       <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 Dark Mode</button>
     </div>
@@ -335,7 +454,6 @@
     <h2>About Me</h2>
     <p>I'm a 9th-grade student at Energy Technical High School. I am deeply passionate about technology and computing; I am currently taking <strong>AP Computer Science Principles (AP CSP)</strong> along with advanced courses to challenge myself. My ultimate goal is to pursue a degree in <strong>Computer Science</strong> at college after high school and build a future within the tech industry.</p>
 
-    <!-- Terminal Skill Visualizer Element -->
     <div class="terminal-box">
       <span style="color: #4f9be3; width: 100%; margin-bottom: 4px;">fellabuzz@portfolio:~$ load skills</span>
       <div class="terminal-badge">AP CSP 🚀</div>
@@ -344,7 +462,6 @@
       <div class="terminal-badge">Future CS Major 🎓</div>
     </div>
 
-    <!-- Academics Section Dashboard -->
     <h2>📊 My Academics (Current Term)</h2>
     <div class="grade-grid">
       <div class="grade-card"><span>Health</span><span class="grade-value">95%</span></div>
@@ -356,7 +473,6 @@
       <div class="grade-card"><span>Engineering Fnd.</span><span class="grade-value">82%</span></div>
     </div>
 
-    <!-- Interests HTML Structure -->
     <h2>My Interests (Click card to reveal!)</h2>
     <div class="grid-container">
       <div class="interactive-card" onclick="revealSecret(this)">
@@ -381,13 +497,11 @@
     <h2>My Goals for This Course</h2>
     <p>I'm taking this course because in the future I hope to go to college for computer science.</p>
 
-    <!-- Live Goal Countdown Tracker widget -->
     <div class="tracker-box">
       <p>🎯 <strong>Countdown to College Bound:</strong> Graduation Year (June 2029)</p>
       <div id="countdown-display" class="time-highlight">Calculating time remaining...</div>
     </div>
 
-    <!-- Random Quote or Fact Generator -->
     <h2>Fun Fact Generator</h2>
     <div class="generator-box" id="fact-box">
       <p id="fact-display">Click the button below to see a cool computer science fact!</p>
@@ -402,7 +516,6 @@
       <li>Code.org App Lab Project 2: <a href="https://studio.code.org/projects/applab/7d1fd0ef-75a5-4440-8706-25c53c7eda1c" target="_blank" rel="noopener noreferrer">View App</a></li>
     </ul>
 
-    <!-- Playable Game Section -->
     <h2>🎯 Range Practice (Mini Aim Trainer)</h2>
     <div class="game-container">
       <div class="game-stats">
@@ -415,12 +528,31 @@
       </div>
     </div>
 
-    <!-- Sticky Bottom Average Dashboard Widget -->
     <div class="bottom-bar">
       🚀 Current Academic Overall Average: <span class="bar-highlight">93%</span>
     </div>
 
-    <!-- JavaScript logic for features -->
+    <button class="ai-chat-launcher" onclick="toggleAiChat()">🤖 Ask Bozi's AI</button>
+    
+    <div class="ai-chat-window" id="ai-chat-window">
+      <div class="ai-chat-header">
+        <span>Buzz-Bot Gemini AI</span>
+        <button class="ai-chat-close" onclick="toggleAiChat()">×</button>
+      </div>
+      
+      <div class="ai-api-config">
+        🔑 <input type="password" id="gemini-key" placeholder="Enter Gemini API key for live mode">
+      </div>
+
+      <div class="ai-chat-messages" id="ai-chat-messages">
+        <div class="ai-message bot">Hey there! I am Bozi's assistant. Ask me anything about his projects, coding stack, or goals! (To activate live Gemini processing, drop a free key in the box above!)</div>
+      </div>
+      <div class="ai-chat-input-area">
+        <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Type a question..." onkeydown="if(event.key === 'Enter') sendAiMessage()">
+        <button class="ai-chat-send" onclick="sendAiMessage()">Send</button>
+      </div>
+    </div>
+
     <script>
       // 1. Theme Toggle Logic (System Aware)
       function checkSystemTheme() {
@@ -573,6 +705,104 @@
             canvas.style.backgroundColor = "#111";
           }, 80);
         }
+      }
+
+      // 6. Local Fallback Database Engine
+      function getFallbackResponse(cleanQuery) {
+        if (cleanQuery.includes("project") || cleanQuery.includes("code") || cleanQuery.includes("github")) {
+          return "Bozi has multiple projects up! He has a solid GitHub footprint under 'fellabuzz' and two active Code.org App Lab apps built using Javascript arrays and UI states.";
+        }
+        if (cleanQuery.includes("grade") || cleanQuery.includes("gpa") || cleanQuery.includes("average") || cleanQuery.includes("school")) {
+          return "Bozi attends Energy Technical High School where he has a stellar overall term average of 93%! His top classes include AP CS Principles (99%) and English 11 (102%).";
+        }
+        if (cleanQuery.includes("goal") || cleanQuery.includes("college") || cleanQuery.includes("future")) {
+          return "Bozi's core objective is to graduate high school strong in June 2029 and get accepted into an elite university program to major in Computer Science!";
+        }
+        if (cleanQuery.includes("valorant") || cleanQuery.includes("game") || cleanQuery.includes("aim")) {
+          return "Bozi plays competitive Valorant under the riot tag fella#buzz! You can practice your target response times on his built-in Range Practice minigame on this screen.";
+        }
+        return "I am operating in local sandbox mode right now. Enter a Gemini API Key in the box above to activate live AI generation!";
+      }
+
+      function toggleAiChat() {
+        const win = document.getElementById("ai-chat-window");
+        win.style.display = (win.style.display === "flex") ? "none" : "flex";
+      }
+    </script>
+
+    <script type="module">
+      import { GoogleGenAI } from "@google/genai";
+
+      // Global context instructions to feed Gemini so it always knows who you are!
+      const systemInstruction = `
+        You are a helpful portfolio chat assistant representing the student Bozi Dape.
+        Keep answers helpful, conversational, and tailored to the context of his portfolio website.
+        Context information about Bozi:
+        - Grade: 9th grader at Energy Technical High School.
+        - Core Career Goal: Wants to pursue a degree in Computer Science at college after high school.
+        - Current Notable Courses: AP Computer Science Principles (Current Grade: 99%), English 11 (Current Grade: 102%), Geometry (Current Grade: 90%).
+        - Overall Term Average: 93%.
+        - Main Interests: Competitive gaming (Valorant profile tag: fella#buzz), soccer, and volleyball.
+        - Active Code Repositories: GitHub portfolio (username: fellabuzz), alongside custom interactive apps designed inside Code.org's App Lab framework.
+      `;
+
+      async function processGeminiQuery(userMessage, apiKey) {
+        try {
+          // Initialize client dynamically with provided credentials
+          const ai = new GoogleGenAI({ apiKey: apiKey });
+          
+          // Request processing using standard gemini-2.5-flash
+          const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: userMessage,
+            config: {
+              systemInstruction: systemInstruction,
+              maxOutputTokens: 250,
+              temperature: 0.7
+            }
+          });
+          
+          return response.text;
+        } catch (error) {
+          console.error("Gemini Live Error: ", error);
+          return "⚠️ Failed to fetch live response from Gemini. Check that your API key is accurate and active.";
+        }
+      }
+
+      // Main dispatch handler linked to interface execution
+      window.sendAiMessage = async function() {
+        const inputEl = document.getElementById("ai-chat-input");
+        const msgContainer = document.getElementById("ai-chat-messages");
+        const apiKey = document.getElementById("gemini-key").value.trim();
+        const query = inputEl.value.trim();
+        
+        if (!query) return;
+
+        // Render User Query
+        const userDiv = document.createElement("div");
+        userDiv.className = "ai-message user";
+        userDiv.innerText = query;
+        msgContainer.appendChild(userDiv);
+        inputEl.value = "";
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+
+        // Create temporary bot placeholder for loading state
+        const botDiv = document.createElement("div");
+        botDiv.className = "ai-message bot";
+        botDiv.innerText = "...";
+        msgContainer.appendChild(botDiv);
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+
+        // Route between Live Gemini API or Sandbox Offline Database
+        if (apiKey) {
+          const liveResponse = await processGeminiQuery(query, apiKey);
+          botDiv.innerText = liveResponse;
+        } else {
+          // Fallback to internal static script execution
+          botDiv.innerText = getFallbackResponse(query.toLowerCase());
+        }
+        
+        msgContainer.scrollTop = msgContainer.scrollHeight;
       }
     </script>
   </body>
