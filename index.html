@@ -3,19 +3,20 @@
      Student: Bozi Dape
      Date: June 17, 2026
      ───────────────────────────────────────────
-     Features added: Weapon Economy Engine, Map Vector Profiles, Canvas Progress Graphing, Soccer Physics Canvas, Interactive Shell Console
+     Feature added: Advanced Aim Tracking Engine, Keyword Auto-Injections, Real-Time Performance Analytics Hub
      AI tool used: Gemini
-     What AI generated: High-frequency game tick state machine, telemetry array delta map pipelines, gravity vector equations.
-     What I modified: Re-factored main state loops to safely house multiple concurrent performance loops without core throttle blocks.
-     Commit message: feat: deploy ultimate loadout econ, tactical maps, match telemetry graphics, and sandbox shell
+     What AI generated: Live telemetry loops, object-oriented drift vector math for target pathing, structured feed arrays.
+     What I modified: Re-mapped canvas tick timers to isolate bounding collisions. Added a high-frequency performance ticker script updating frame delta calculations.
+     Commit message: feat: replace aura with telemetry dashboard, deploy moving targets, and quick AI chips
 ═══════════════════════════════════════════ -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bozi Dape's Ultra Portfolio</title>
+    <title>Bozi Dape's Website</title>
     <style>
+      /* Base Variables for smooth color switching */
       :root {
         --bg-color: #f5f5f5;
         --text-color: #333333;
@@ -30,148 +31,535 @@
         --success-green: #2ebd59;
         --ai-bot-bg: #1F4E79;
         --alert-red: #ff4655;
-        --v-dark: #111116;
       }
 
+      /* Dark Mode Variables applied via Javascript class */
       body.dark-theme {
-        --bg-color: #0c0c0f;
-        --text-color: #e0e0e3;
-        --h1-color: #ff4655;
+        --bg-color: #121212;
+        --text-color: #e0e0e0;
+        --h1-color: #6ba4e8;
         --h2-color: #4f9be3;
-        --card-bg: #16161e;
-        --btn-bg: #ff4655;
-        --btn-hover: #cf3240;
+        --card-bg: #1e1e1e;
+        --btn-bg: #4f9be3;
+        --btn-hover: #6ba4e8;
         --link-color: #4f9be3;
-        --accent-glow: rgba(255, 70, 85, 0.2);
-        --terminal-bg: #1a1a24;
+        --accent-glow: rgba(79, 155, 227, 0.3);
+        --terminal-bg: #1a1a1a;
         --success-green: #42d36f;
-        --ai-bot-bg: #ff4655;
+        --ai-bot-bg: #4f9be3;
       }
 
-      ::selection { background: var(--btn-bg); color: white; }
-      ::-webkit-scrollbar { width: 8px; }
-      ::-webkit-scrollbar-track { background: var(--bg-color); }
-      ::-webkit-scrollbar-thumb { background: var(--btn-bg); border-radius: 4px; }
+      /* Styled Selection & Scrollbar */
+      ::selection {
+        background: var(--btn-bg);
+        color: white;
+      }
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-color);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--h2-color);
+        border-radius: 5px;
+      }
 
+      /* Layout Styles */
       body { 
         font-family: Arial, sans-serif; 
-        max-width: 900px;
+        max-width: 800px;
         margin: 0 auto; 
         padding: 20px; 
         background: var(--bg-color); 
         color: var(--text-color);
         transition: background 0.3s, color 0.3s;
-        padding-bottom: 100px; 
+        position: relative;
+        padding-bottom: 90px; 
       }
-      h1 { color: var(--h1-color); margin-bottom: 5px; font-size: 2.2rem; }
-      h2 { color: var(--h2-color); border-bottom: 2px solid var(--h2-color); padding-bottom: 5px; margin-top: 40px; }
-      p { line-height: 1.6; }
-      a { color: var(--link-color); text-decoration: none; font-weight: bold; }
+      h1   { color: var(--h1-color); transition: color 0.3s; margin-bottom: 5px; }
+      h2   { color: var(--h2-color); border-bottom: 2px solid var(--h2-color); transition: color 0.3s, border-color 0.3s; padding-bottom: 5px; margin-top: 30px; }
+      p    { line-height: 1.6; }
+      a    { color: var(--link-color); text-decoration: none; font-weight: bold; }
       a:hover { text-decoration: underline; }
 
-      /* Telemetry Engine Style */
+      /* Telemetry Performance Analytics Dashboard Box */
       .telemetry-dashboard {
-        background: var(--v-dark);
+        background: #111116;
         color: #00ff66;
         font-family: 'Courier New', Courier, monospace;
         border-radius: 8px;
-        padding: 15px;
+        padding: 12px 15px;
         margin-bottom: 20px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        border: 1px solid #222;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+        gap: 10px;
         font-size: 0.8rem;
       }
-      .telemetry-stat { display: flex; flex-direction: column; }
-      .telemetry-label { color: #777; font-size: 0.7rem; text-transform: uppercase; }
-      .telemetry-value { font-weight: bold; font-size: 1.1rem; }
-      .load-bar-bg { background: #222; height: 5px; border-radius: 2px; margin-top: 4px; overflow: hidden; }
-      .load-bar-fill { background: #00ff66; height: 100%; width: 10%; transition: width 0.2s; }
+      .telemetry-stat {
+        display: flex;
+        flex-direction: column;
+      }
+      .telemetry-label {
+        color: #888;
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+      }
+      .telemetry-value {
+        font-weight: bold;
+        font-size: 0.95rem;
+      }
+      .load-bar-bg {
+        background: #222;
+        height: 4px;
+        border-radius: 2px;
+        margin-top: 4px;
+        overflow: hidden;
+      }
+      .load-bar-fill {
+        background: #00ff66;
+        height: 100%;
+        width: 12%;
+        transition: width 0.2s ease;
+      }
 
-      .theme-toggle-container { display: flex; justify-content: flex-end; margin-bottom: 15px; }
-      .theme-btn { background: var(--card-bg); color: var(--text-color); border: 1px solid var(--btn-bg); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: bold; transition: 0.2s; }
-      .theme-btn:hover { transform: scale(1.05); }
+      /* Theme Toggle Button Layout */
+      .theme-toggle-container {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+      }
+      .theme-btn {
+        background: var(--card-bg);
+        color: var(--text-color);
+        border: 1px solid var(--text-color);
+        padding: 8px 15px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s;
+      }
+      .theme-btn:hover {
+        transform: scale(1.05);
+      }
 
-      /* Interactive Functional Cards */
-      .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin: 20px 0; }
-      .interactive-card { background: var(--card-bg); padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; transition: 0.2s; border-left: 4px solid var(--h2-color); position: relative; }
-      .interactive-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px var(--accent-glow); }
-      .interactive-card.active .secret-text { display: block; }
-      .secret-text { display: none; margin-top: 15px; font-size: 0.92rem; background: rgba(0,0,0,0.03); padding: 12px; border-radius: 6px; }
-      body.dark-theme .secret-text { background: rgba(255,255,255,0.04); }
+      /* Interactive Skills Terminal Section */
+      .terminal-box {
+        background: var(--terminal-bg);
+        border-radius: 6px;
+        padding: 12px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9rem;
+        margin: 15px 0;
+        border-left: 3px solid var(--h2-color);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .terminal-badge {
+        background: var(--card-bg);
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid var(--h2-color);
+        font-weight: bold;
+      }
 
-      /* World Cup Match Layout */
-      .wc-dashboard { margin-top: 10px; background: var(--v-dark); border-radius: 6px; padding: 12px; color: #fff; }
-      .wc-match-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #222; font-size: 0.85rem; }
+      /* Grid layout for interactive Cards */
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 15px;
+        margin: 15px 0;
+      }
+      .interactive-card {
+        background: var(--card-bg);
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        cursor: pointer;
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+        border-left: 4px solid var(--h2-color);
+      }
+      .interactive-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px var(--accent-glow);
+      }
+      
+      .interactive-card.active .secret-text {
+        display: block;
+      }
+      .secret-text {
+        display: none;
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: var(--text-color);
+        background: rgba(0,0,0,0.03);
+        padding: 8px;
+        border-radius: 4px;
+      }
+      body.dark-theme .secret-text {
+        background: rgba(255,255,255,0.05);
+      }
+
+      /* World Cup Match Center Sub-Widget UI */
+      .wc-dashboard {
+        margin-top: 10px;
+        background: rgba(0,0,0,0.02);
+        border-radius: 6px;
+        padding: 10px;
+      }
+      body.dark-theme .wc-dashboard {
+        background: rgba(255,255,255,0.02);
+      }
+      .wc-match-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        border-bottom: 1px dashed var(--terminal-bg);
+        font-size: 0.85rem;
+        color: var(--text-color);
+      }
       .wc-match-row:last-child { border-bottom: none; }
-      .wc-badge-live { background: var(--alert-red); color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold; font-size: 0.65rem; animation: pulse 1.5s infinite; }
-      @keyframes pulse { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+      .wc-badge-live {
+        background: var(--alert-red);
+        color: white;
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-weight: bold;
+        font-size: 0.7rem;
+      }
 
-      /* Juggling Ball Mini Game Widget */
-      .jiggle-container { width: 100%; height: 160px; background: #0c2340; border-radius: 6px; position: relative; overflow: hidden; margin-top: 10px; cursor: pointer; }
-      .jiggle-ball { width: 24px; height: 24px; background: #fff; border-radius: 50%; position: absolute; left: 50%; bottom: 80px; transform: translateX(-50%); background-image: radial-gradient(circle, #fff 70%, #bbb 100%); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
+      /* Grade Section Layout */
+      .grade-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin: 15px 0;
+      }
+      .grade-card {
+        background: var(--card-bg);
+        padding: 12px 15px;
+        border-radius: 6px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-right: 4px solid var(--btn-bg);
+      }
+      .grade-value {
+        font-weight: bold;
+        color: var(--h1-color);
+        font-size: 1.1rem;
+      }
 
-      /* Academics Layout */
-      .grade-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin: 20px 0; }
-      .grade-card { background: var(--card-bg); padding: 15px; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); display: flex; justify-content: space-between; align-items: center; border-right: 4px solid var(--btn-bg); }
-      .grade-value { font-weight: bold; color: var(--h1-color); font-size: 1.15rem; }
+      /* Bottom Average Display Widget */
+      .bottom-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: var(--card-bg);
+        box-shadow: 0 -4px 10px rgba(0,0,0,0.1);
+        padding: 12px 0;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.1rem;
+        z-index: 99;
+        border-top: 3px solid var(--success-green);
+        transition: background 0.3s;
+      }
+      .bar-highlight {
+        color: var(--success-green);
+        font-size: 1.2rem;
+      }
 
-      /* Aim Range Arena Layout */
-      .game-container { background: var(--card-bg); border: 2px solid var(--h2-color); border-radius: 10px; padding: 20px; margin: 25px 0; }
-      .arena-controls { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; align-items: center; }
-      .game-canvas { width: 100%; height: 300px; background: #15151c; position: relative; overflow: hidden; border-radius: 8px; cursor: crosshair; border: 2px solid #222; background-size: cover; background-position: center; }
-      .game-target { width: 30px; height: 30px; border-radius: 50%; position: absolute; display: none; transform: translate(-50%, -50%); border: 2px solid #fff; box-shadow: 0 0 15px rgba(255,255,255,0.4); }
-      
-      /* Tac Shop UI */
-      .shop-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin-top: 15px; background: rgba(0,0,0,0.02); padding: 12px; border-radius: 6px; }
-      body.dark-theme .shop-container { background: rgba(255,255,255,0.02); }
-      .shop-item { background: var(--card-bg); border: 1px solid var(--terminal-bg); border-radius: 6px; padding: 10px; text-align: center; font-size: 0.8rem; cursor: pointer; transition: 0.15s; }
-      .shop-item:hover { border-color: var(--btn-bg); transform: scale(1.02); }
-      .shop-item.owned { border: 2px solid var(--success-green); background: rgba(0,255,0,0.02); }
+      /* Mini AI Widget Interface Styling */
+      .ai-chat-launcher {
+        position: fixed;
+        bottom: 60px;
+        right: 20px;
+        background-color: var(--ai-bot-bg);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 20px;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 101;
+        transition: transform 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ai-chat-launcher:hover {
+        transform: scale(1.05);
+      }
+      .ai-chat-window {
+        position: fixed;
+        bottom: 120px;
+        right: 20px;
+        width: 350px;
+        height: 460px;
+        background: var(--card-bg);
+        border: 2px solid var(--h2-color);
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 101;
+      }
+      .ai-chat-header {
+        background: var(--ai-bot-bg);
+        color: white;
+        padding: 12px;
+        font-weight: bold;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .ai-chat-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+      }
+      .ai-api-config {
+        background: var(--terminal-bg);
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+      }
+      .ai-api-config input {
+        flex: 1;
+        font-size: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 2px 6px;
+      }
+      .ai-chat-messages {
+        flex: 1;
+        padding: 12px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        font-size: 0.9rem;
+      }
+      .ai-message {
+        padding: 8px 12px;
+        border-radius: 8px;
+        max-width: 80%;
+        line-height: 1.4;
+      }
+      .ai-message.bot {
+        background: var(--terminal-bg);
+        align-self: flex-start;
+      }
+      .ai-message.user {
+        background: var(--btn-bg);
+        color: white;
+        align-self: flex-end;
+      }
 
-      /* Analytics Canvas Graphing */
-      .graph-container { background: var(--card-bg); padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin: 20px 0; }
-      .history-canvas { width: 100%; height: 120px; background: var(--v-dark); border-radius: 4px; }
+      /* AI Chip Prompt Suggestions Row */
+      .ai-chips-wrapper {
+        display: flex;
+        gap: 5px;
+        padding: 4px 8px;
+        background: var(--card-bg);
+        overflow-x: auto;
+        border-top: 1px solid var(--terminal-bg);
+      }
+      .ai-chip {
+        background: var(--terminal-bg);
+        color: var(--text-color);
+        font-size: 0.75rem;
+        padding: 4px 8px;
+        border-radius: 12px;
+        white-space: nowrap;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: border-color 0.2s;
+      }
+      .ai-chip:hover {
+        border-color: var(--h2-color);
+      }
 
-      /* Interactive Command Console System */
-      .console-box { background: #0a0a0f; color: #39ff14; font-family: 'Courier New', Courier, monospace; padding: 15px; border-radius: 8px; margin: 25px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); border: 1px solid #222; }
-      .console-logs { height: 140px; overflow-y: auto; font-size: 0.82rem; line-height: 1.4; margin-bottom: 10px; }
-      .console-input-row { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; }
-      .console-input { flex: 1; background: transparent; border: none; color: #39ff14; font-family: inherit; outline: none; font-size: 0.85rem; }
+      .ai-chat-input-area {
+        display: flex;
+        padding: 8px;
+        gap: 6px;
+        background: var(--card-bg);
+      }
+      .ai-chat-input {
+        flex: 1;
+        border: 1px solid var(--h2-color);
+        border-radius: 4px;
+        padding: 6px 10px;
+        background: var(--bg-color);
+        color: var(--text-color);
+        outline: none;
+      }
+      .ai-chat-send {
+        background: var(--btn-bg);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 0 14px;
+        cursor: pointer;
+        font-weight: bold;
+      }
 
-      /* Core Widgets Layout */
-      .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); box-shadow: 0 -4px 12px rgba(0,0,0,0.1); padding: 12px 0; text-align: center; font-weight: bold; font-size: 1.05rem; z-index: 99; border-top: 3px solid var(--success-green); }
-      .bar-highlight { color: var(--success-green); }
+      /* Tracker & Project Badges */
+      .tracker-badge {
+        display: inline-block;
+        margin-top: 8px;
+        background: var(--btn-bg);
+        color: white !important;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .tracker-badge:hover {
+        background: var(--btn-hover);
+        transform: scale(1.03);
+        text-decoration: none;
+      }
 
-      .ai-chat-launcher { position: fixed; bottom: 55px; right: 20px; background-color: var(--ai-bot-bg); color: white; border: none; border-radius: 50px; padding: 12px 22px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 101; font-size: 0.9rem; }
-      .ai-chat-window { position: fixed; bottom: 115px; right: 20px; width: 350px; height: 440px; background: var(--card-bg); border: 2px solid var(--h2-color); border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.2); display: none; flex-direction: column; overflow: hidden; z-index: 101; }
-      .ai-chat-header { background: var(--ai-bot-bg); color: white; padding: 12px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-      .ai-chat-close { background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer; }
-      .ai-chat-messages { flex: 1; padding: 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem; }
-      .ai-message { padding: 8px 12px; border-radius: 8px; max-width: 80%; line-height: 1.4; }
-      .ai-message.bot { background: var(--terminal-bg); align-self: flex-start; }
-      .ai-message.user { background: var(--btn-bg); color: white; align-self: flex-end; }
-      .ai-chips-wrapper { display: flex; gap: 5px; padding: 6px 10px; background: var(--card-bg); overflow-x: auto; border-top: 1px solid var(--terminal-bg); }
-      .ai-chip { background: var(--terminal-bg); color: var(--text-color); font-size: 0.75rem; padding: 4px 10px; border-radius: 12px; white-space: nowrap; cursor: pointer; }
-      .ai-chat-input-area { display: flex; padding: 8px; gap: 6px; background: var(--card-bg); }
-      .ai-chat-input { flex: 1; border: 1px solid var(--h2-color); border-radius: 4px; padding: 6px 10px; background: var(--bg-color); color: var(--text-color); outline: none; }
-      .ai-chat-send { background: var(--btn-bg); color: white; border: none; border-radius: 4px; padding: 0 14px; cursor: pointer; font-weight: bold; }
-      
-      .tracker-box { background: var(--card-bg); border: 1px dashed var(--h2-color); padding: 15px; border-radius: 8px; margin: 15px 0; text-align: center; }
-      .time-highlight { font-size: 1.25rem; font-weight: bold; color: var(--h1-color); }
+      .project-list li {
+        margin-bottom: 10px;
+        transition: transform 0.2s;
+      }
+      .project-list li:hover {
+        transform: translateX(6px);
+      }
+
+      /* Generator Card Styling */
+      .generator-box {
+        background: var(--card-bg);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        text-align: center;
+        margin: 20px 0;
+      }
+      .generator-box p {
+        font-size: 1.2rem;
+        font-style: italic;
+        min-height: 50px;
+        transition: opacity 0.2s ease-in-out;
+      }
+      .generator-btn {
+        background-color: var(--btn-bg);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 1rem;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s, transform 0.1s;
+      }
+      .generator-btn:hover {
+        background-color: var(--btn-hover);
+      }
+      .generator-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* Advanced Valorant Tracking Range canvas layout */
+      .game-container {
+        background: var(--card-bg);
+        border: 2px solid var(--h2-color);
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .game-canvas {
+        width: 100%;
+        height: 250px;
+        background: #111116; 
+        position: relative;
+        overflow: hidden;
+        border-radius: 6px;
+        margin-top: 10px;
+        cursor: crosshair;
+        border: 1px solid rgba(255,255,255,0.1);
+      }
+      .game-target {
+        width: 32px;
+        height: 32px;
+        background: var(--alert-red); 
+        border: 2px solid white;
+        border-radius: 50%;
+        position: absolute;
+        display: none;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 0 12px rgba(255, 70, 85, 0.5);
+        transition: background-color 0.2s;
+      }
+      .game-stats {
+        display: flex;
+        justify-content: space-around;
+        font-weight: bold;
+        margin-bottom: 8px;
+      }
+
+      /* Animation Effect class */
+      .pop-animation {
+        animation: popEffect 0.3s ease-out;
+      }
+      @keyframes popEffect {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+      }
+
+      /* Goal Tracker styling */
+      .tracker-box {
+        background: var(--card-bg);
+        border: 1px dashed var(--h2-color);
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        text-align: center;
+      }
+      .time-highlight {
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: var(--h1-color);
+      }
     </style>
-    <script type="importmap"> { "imports": { "@google/genai": "https://esm.run/@google/genai" } } </script>
+    
+    <!-- Import Google Gen AI SDK via modern Import Map ESM modules -->
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/genai": "https://esm.run/@google/genai"
+        }
+      }
+    </script>
   </head>
-  <body onload="checkSystemTheme(); startCountdown(); updateWCObjects(); initTelemetry(); initConsole(); drawPerformanceGraph();">
+  <body onload="checkSystemTheme(); startCountdown(); updateWCObjects(); initTelemetry();">
 
+    <!-- Theme Toggle Button UI -->
     <div class="theme-toggle-container">
       <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙 Dark Mode</button>
     </div>
 
     <h1>Hi, I'm Bozi Dape!</h1>
 
-    <!-- Live System Telemetry Engine -->
+    <!-- Performance Telemetry Core Dashboard (My Choice Addition) -->
     <div class="telemetry-dashboard">
       <div class="telemetry-stat">
         <span class="telemetry-label">Engine Rate</span>
@@ -179,232 +567,247 @@
       </div>
       <div class="telemetry-stat">
         <span class="telemetry-label">Client Network</span>
-        <span class="telemetry-value" id="telemetry-ping">15 ms</span>
+        <span class="telemetry-value" id="telemetry-ping">18 ms</span>
       </div>
       <div class="telemetry-stat">
-        <span class="telemetry-label">Allocated Heap</span>
-        <span class="telemetry-value" id="telemetry-mem">44.12 MB</span>
+        <span class="telemetry-label">Heap Memory</span>
+        <span class="telemetry-value" id="telemetry-mem">42.31 MB</span>
       </div>
       <div class="telemetry-stat">
-        <span class="telemetry-label">Active Core Load</span>
-        <span class="telemetry-value" id="telemetry-load">6%</span>
+        <span class="telemetry-label">CPU Render Load</span>
+        <span class="telemetry-value" id="telemetry-load">12%</span>
         <div class="load-bar-bg"><div class="load-bar-fill" id="telemetry-load-bar"></div></div>
       </div>
     </div>
 
     <h2>About Me</h2>
-    <p>I'm a 9th-grade student at Energy Technical High School. I am deeply passionate about technology and computing; I am currently taking <strong>AP Computer Science Principles (AP CSP)</strong> along with advanced courses to challenge myself. My ultimate goal is to pursue a degree in <strong>Computer Science</strong> after high school and build a future within the tech industry.</p>
+    <p>I'm a 9th-grade student at Energy Technical High School. I am deeply passionate about technology and computing; I am currently taking <strong>AP Computer Science Principles (AP CSP)</strong> along with advanced courses to challenge myself. My ultimate goal is to pursue a degree in <strong>Computer Science</strong> at college after high school and build a future within the tech industry.</p>
+
+    <!-- Terminal Skill Visualizer Element -->
+    <div class="terminal-box">
+      <span style="color: #4f9be3; width: 100%; margin-bottom: 4px;">fellabuzz@portfolio:~$ load skills</span>
+      <div class="terminal-badge">AP CSP 🚀</div>
+      <div class="terminal-badge">Python 🐍</div>
+      <div class="terminal-badge">HTML/CSS/JS 🌐</div>
+      <div class="terminal-badge">Future CS Major 🎓</div>
+    </div>
 
     <!-- Academics Section Dashboard -->
     <h2>📊 My Academics (Current Term)</h2>
     <div class="grade-grid">
       <div class="grade-card"><span>Health</span><span class="grade-value">95%</span></div>
       <div class="grade-card"><span>Next Gen Science</span><span class="grade-value">90%</span></div>
+      <div class="grade-card"><span>Earth & Space Sci</span><span class="grade-value">91%</span></div>
       <div class="grade-card"><span>English 11</span><span class="grade-value">102%</span></div>
       <div class="grade-card"><span>Geometry</span><span class="grade-value">90%</span></div>
       <div class="grade-card"><span>AP Comp Sci Principles</span><span class="grade-value">99%</span></div>
+      <div class="grade-card"><span>Engineering Fnd.</span><span class="grade-value">82%</span></div>
     </div>
 
-    <!-- Interests Module with Sub-Apps Inside -->
-    <h2>My Interests (Click card to interact!)</h2>
+    <!-- Interests HTML Structure -->
+    <h2>My Interests (Click card to reveal!)</h2>
     <div class="grid-container">
       <div class="interactive-card" onclick="revealSecret(this)">
-        <strong>🎮 Valorant Profile & Tracker</strong>
+        <strong>🎮 Valorant Profile: fella#buzz</strong>
         <p class="secret-text">
-          Main Role: Duelist/Initiator. Practicing routine mechanics daily below!<br><br>
-          <a style="background:var(--btn-bg); color:white; padding:5px 10px; border-radius:4px; font-size:0.8rem;" href="https://tracker.gg/valorant/profile/riot/fella%23buzz/overview" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">Open Tracker.gg Profile 📈</a>
+          Current main: Duelist or Initiator role. Practicing aiming daily!<br>
+          <a class="tracker-badge" href="https://tracker.gg/valorant/profile/riot/fella%23buzz/overview?platform=pc&playlist=unrated&season=ce2783e8-44fc-dd48-3da3-33b5ba6c4a22" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">
+            View Live Tracker Stats 📈
+          </a>
         </p>
       </div>
       <div class="interactive-card" onclick="revealSecret(this)">
-        <strong>⚽ Soccer & World Cup (Interactive Page)</strong>
-        <p class="secret-text" onclick="event.stopPropagation();">
-          Keep track of tournament tickers or practice your mechanics in the sandbox kit below:
-          <span class="wc-dashboard" id="wc-dashboard-node">Loading Score Feed Module...</span>
-          
-          <span style="display:block; font-size:0.8rem; margin:10px 0 4px 0; font-weight:bold; color:var(--h2-color);">⚽ Ball Control Juggling Sandbox:</span>
-          <span style="font-size:0.75rem; color:#777; display:block; margin-bottom:4px;">Click the ball repeatedly to prevent terminal velocity dropouts!</span>
-          <span style="font-size:0.8rem; font-weight:bold; display:block;">Current Juggle Streak: <span id="juggle-score">0</span></span>
-          <div class="jiggle-container" id="juggle-box" onclick="resetBallDrop()">
-            <div class="jiggle-ball" id="jiggle-ball" onclick="juggleBall(event)"></div>
-          </div>
+        <strong>⚽ Soccer & 2026 World Cup</strong>
+        <p class="secret-text">
+          Love the teamwork and strategic running needed on the pitch. Keep up with the live tournament boards right here:
+          <span class="wc-dashboard" id="wc-dashboard-node" style="display:block;">Loading Match Tracker Hub...</span>
         </p>
       </div>
-    </div>
-
-    <!-- Interactive Aim Trainer Arena Grid Section -->
-    <h2>🎯 Tactical Aim Training Arena (Econ & Map Engines)</h2>
-    <div class="game-container">
-      <div class="arena-controls">
-        <div>💰 Creds: <span id="game-creds" style="color:var(--success-green); font-weight:bold;">0</span></div>
-        <div>Score: <span id="game-score" style="font-weight:bold;">0</span></div>
-        <div>High Score: <span id="game-high">0</span></div>
-        <div>
-          <select id="map-select" onchange="changeArenaMap()" style="padding:4px; border-radius:4px; background:var(--card-bg); color:var(--text-color);">
-            <option value="dark">Default Dark Range</option>
-            <option value="ascent">Map: Ascent Site</option>
-            <option value="bind">Map: Bind Hookah</option>
-          </select>
-        </div>
-        <button class="generator-btn" id="start-game-btn" onclick="startAdvancedGame()" style="padding:6px 12px; font-size:0.85rem;">Start Range Contract</button>
-      </div>
-
-      <div class="game-canvas" id="game-canvas" onclick="missShot()">
-        <div class="game-target" id="game-target" onclick="hitTarget(event)"></div>
-      </div>
-
-      <!-- Tactical Gun Economy Shop Elements -->
-      <div style="font-size:0.85rem; font-weight:bold; margin-top:15px; color:var(--h2-color);">🛒 Buy Phase Loadout (Increases Points per Hit):</div>
-      <div class="shop-container">
-        <div class="shop-item owned" id="shop-classic" onclick="buyWeapon('classic', 0, 1)">
-          <strong>Classic</strong><br>Cost: 0<br><span style="color:#777">Multiplier: 1x</span>
-        </div>
-        <div class="shop-item" id="shop-phantom" onclick="buyWeapon('phantom', 200, 2)">
-          <strong>Phantom</strong><br>Cost: 200<br><span style="color:var(--success-green)">Multiplier: 2x</span>
-        </div>
-        <div class="shop-item" id="shop-vandal" onclick="buyWeapon('vandal', 400, 3)">
-          <strong>Vandal</strong><br>Cost: 400<br><span style="color:var(--success-green)">Multiplier: 3x</span>
-        </div>
+      <div class="interactive-card" onclick="revealSecret(this)">
+        <strong>🏐 Volleyball</strong>
+        <p class="secret-text">Perfecting jumps, serves, and communicating closely with teammates.</p>
       </div>
     </div>
 
-    <!-- Performance Trend Analytics Module -->
-    <div class="graph-container">
-      <h3 style="margin-top:0; font-size:0.9rem; text-transform:uppercase; color:#777;">📈 Aim Range Telemetry History Plotter</h3>
-      <canvas class="history-canvas" id="history-canvas" width="600" height="120"></canvas>
-    </div>
+    <h2>My Goals for This Course</h2>
+    <p>I'm taking this course because in the future I hope to go to college for computer science.</p>
 
-    <!-- Live Command Shell Box Terminal Configuration -->
-    <h2>💻 System Core Interactive Command Shell</h2>
-    <p>Type terminal matrix query executions directly into the shell layer below:</p>
-    <div class="console-box">
-      <div class="console-logs" id="console-logs"></div>
-      <div class="console-input-row">
-        <span>fellabuzz@portfolio:~$</span>
-        <input type="text" class="console-input" id="console-input" placeholder="Type /help, /clear, /stats, or /run-diagnostics..." onkeydown="if(event.key==='Enter') executeShellCommand()">
-      </div>
-    </div>
-
-    <!-- Countdown & Projects Footer Core Nodes -->
+    <!-- Live Goal Countdown Tracker widget -->
     <div class="tracker-box">
-      <p>🎯 <strong>Countdown to College Bound Graduation:</strong> (June 2029)</p>
-      <div id="countdown-display" class="time-highlight">Computing delta timeline parameters...</div>
+      <p>🎯 <strong>Countdown to College Bound:</strong> Graduation Year (June 2029)</p>
+      <div id="countdown-display" class="time-highlight">Calculating time remaining...</div>
+    </div>
+
+    <!-- Random Quote or Fact Generator -->
+    <h2>Fun Fact Generator</h2>
+    <div class="generator-box" id="fact-box">
+      <p id="fact-display">Click the button below to see a cool computer science fact!</p>
+      <button class="generator-btn" onclick="generateFact()">Generate Fact</button>
     </div>
 
     <h2>My Projects & Code</h2>
-    <ul style="line-height:1.8;">
-      <li>GitHub Hub: <a href="https://github.com/fellabuzz" target="_blank" rel="noopener noreferrer">fellabuzz</a></li>
-      <li>App Lab Stack 1: <a href="https://studio.code.org/projects/applab/08dcf837-0a8b-42e1-aefd-ce4a3db59864" target="_blank" rel="noopener noreferrer">View Deployment</a></li>
+    <p>Check out my computer science work across platforms:</p>
+    <ul class="project-list">
+      <li>GitHub Portfolio: <a href="https://github.com/fellabuzz" target="_blank" rel="noopener noreferrer">fellabuzz</a></li>
+      <li>Code.org App Lab Project 1: <a href="https://studio.code.org/projects/applab/08dcf837-0a8b-42e1-aefd-ce4a3db59864" target="_blank" rel="noopener noreferrer">View App</a></li>
+      <li>Code.org App Lab Project 2: <a href="https://studio.code.org/projects/applab/7d1fd0ef-75a5-4440-8706-25c53c7eda1c" target="_blank" rel="noopener noreferrer">View App</a></li>
     </ul>
 
-    <div class="bottom-bar">🚀 Current Academic Overall Average: <span class="bar-highlight">93%</span></div>
-
-    <!-- Mini AI Bot Frame -->
-    <button class="ai-chat-launcher" onclick="toggleAiChat()">🤖 Ask Bozi's AI</button>
-    <div class="ai-chat-window" id="ai-chat-window">
-      <div class="ai-chat-header"><span>Buzz-Bot AI</span><button class="ai-chat-close" onclick="toggleAiChat()">×</button></div>
-      <div class="ai-chat-messages" id="ai-chat-messages">
-        <div class="ai-message bot">Welcome! Ask me anything about Bozi's coding credentials or projects. Provide a live key inside the terminal pipeline to link high-frequency processing modes.</div>
+    <!-- Playable Game Section -->
+    <h2>🎯 Range Practice (Valorant Moving Mechanics Edition)</h2>
+    <div class="game-container">
+      <div class="game-stats">
+        <div>Score: <span id="game-score">0</span></div>
+        <div>High Score: <span id="game-high">0</span></div>
       </div>
+      <button class="generator-btn" id="start-game-btn" onclick="startAdvancedGame()">Start DM Training</button>
+      <div class="game-canvas" id="game-canvas" onclick="missShot()">
+        <div class="game-target" id="game-target" onclick="hitTarget(event)"></div>
+      </div>
+    </div>
+
+    <!-- Sticky Bottom Average Dashboard Widget -->
+    <div class="bottom-bar">
+      🚀 Current Academic Overall Average: <span class="bar-highlight">93%</span>
+    </div>
+
+    <!-- Mini AI Bot Interface UI Elements -->
+    <button class="ai-chat-launcher" onclick="toggleAiChat()">🤖 Ask Bozi's AI</button>
+    
+    <div class="ai-chat-window" id="ai-chat-window">
+      <div class="ai-chat-header">
+        <span>Buzz-Bot Gemini AI</span>
+        <button class="ai-chat-close" onclick="toggleAiChat()">×</button>
+      </div>
+      
+      <!-- Key Setup Interface for secure client utilization -->
+      <div class="ai-api-config">
+        🔑 <input type="password" id="gemini-key" placeholder="Enter Gemini API key for live mode">
+      </div>
+
+      <div class="ai-chat-messages" id="ai-chat-messages">
+        <div class="ai-message bot">Hey there! I am Bozi's assistant. Ask me anything about his projects, coding stack, or goals! (To activate live Gemini processing, drop a free key in the box above!)</div>
+      </div>
+
+      <!-- Quick Action Prompt Suggestion Buttons -->
       <div class="ai-chips-wrapper">
         <div class="ai-chip" onclick="injectChipPrompt('Tell me about your portfolio projects')">📁 Projects</div>
         <div class="ai-chip" onclick="injectChipPrompt('What are your school grades?')">📊 Academics</div>
+        <div class="ai-chip" onclick="injectChipPrompt('What is your Valorant player tracker tag?')">🎮 Valorant Tag</div>
       </div>
+
       <div class="ai-chat-input-area">
-        <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Inquire status..." onkeydown="if(event.key==='Enter') sendAiMessage()">
+        <input type="text" class="ai-chat-input" id="ai-chat-input" placeholder="Type a question..." onkeydown="if(event.key === 'Enter') sendAiMessage()">
         <button class="ai-chat-send" onclick="sendAiMessage()">Send</button>
       </div>
     </div>
 
-    <!-- ALL ENGINE JAVASCRIPT LOGIC PIPELINES -->
+    <!-- JavaScript logic for features -->
     <script>
-      let score = 0, highScore = 0, creds = 100, scoreMultiplier = 1;
-      let gameActive = false, gameIntervalTimer, renderLoopId;
-      let targetX = 0, targetY = 0, velocityX = 0, velocityY = 0;
-      const targetColors = ["#ff4655", "#00f0ff", "#bd2ebd", "#ffb800"];
-      let scoreHistory = [12, 18, 15, 22, 0];
-
-      // Maps Layout Configuration Image simulation
-      const mapBackgrounds = {
-        dark: "#15151c",
-        ascent: "linear-gradient(rgba(21,21,28,0.85), rgba(21,21,28,0.85)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600')",
-        bind: "linear-gradient(rgba(21,21,28,0.85), rgba(21,21,28,0.85)), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=600')"
-      };
-
-      function changeArenaMap() {
-        const val = document.getElementById("map-select").value;
-        document.getElementById("game-canvas").style.background = mapBackgrounds[val];
-        logConsoleEvent(`System updated tactical map asset grid: ${val.toUpperCase()}`);
-      }
-
-      function buyWeapon(id, cost, mult) {
-        if (creds >= cost) {
-          creds -= cost;
-          scoreMultiplier = mult;
-          document.getElementById("game-creds").innerText = creds;
-          document.querySelectorAll('.shop-item').forEach(el => el.classList.remove('owned'));
-          document.getElementById(`shop-${id}`).classList.add('owned');
-          logConsoleEvent(`Econ Phase: Purchased weapon armory slot [${id.toUpperCase()}]. Multiplier set to ${mult}x.`);
-        } else {
-          logConsoleEvent(`⚠️ Econ Alert: Insufficient Creds to allocate [${id.toUpperCase()}]. Needs ${cost}.`);
-        }
-      }
-
-      function drawPerformanceGraph() {
-        const canvas = document.getElementById("history-canvas");
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        
-        ctx.strokeStyle = "#ff4655";
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        const step = canvas.width / (scoreHistory.length - 1);
-        
-        for(let i=0; i<scoreHistory.length; i++) {
-          const x = i * step;
-          const y = canvas.height - (scoreHistory[i] * 3) - 10;
-          if(i===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-          
-          ctx.fillStyle = "#fff";
-          ctx.fillRect(x-3, y-3, 6, 6);
-        }
-        ctx.stroke();
-      }
-
+      // 1. Theme Toggle Logic (System Aware)
       function checkSystemTheme() {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
           document.body.classList.add("dark-theme");
           document.getElementById("theme-btn").innerText = "☀️ Light Mode";
         }
       }
-      function toggleTheme() {
-        document.body.classList.toggle("dark-theme");
-        document.getElementById("theme-btn").innerText = document.body.classList.contains("dark-theme") ? "☀️ Light Mode" : "🌙 Dark Mode";
-      }
-      function revealSecret(el) { el.classList.toggle('active'); }
 
+      function toggleTheme() {
+        const body = document.body;
+        const btn = document.getElementById("theme-btn");
+        body.classList.toggle("dark-theme");
+        if (body.classList.contains("dark-theme")) {
+          btn.innerText = "☀️ Light Mode";
+        } else {
+          btn.innerText = "🌙 Dark Mode";
+        }
+      }
+
+      // 2. Click to Reveal Card Logic
+      function revealSecret(cardElement) {
+        cardElement.classList.toggle('active');
+      }
+
+      // 3. Dynamic Future Goal Graduation Countdown Logic 
       function startCountdown() {
         const targetDate = new Date("June 15, 2029 09:00:00").getTime();
-        setInterval(() => {
-          const distance = targetDate - new Date().getTime();
-          document.getElementById("countdown-display").innerText = distance < 0 ? "College Bound!" : `${Math.floor(distance / (1000*60*60*24))} Days left to crush high school goals!`;
-        }, 60000);
+        const displayEl = document.getElementById("countdown-display");
+        
+        function updateDisplay() {
+          if (!displayEl) return;
+          const now = new Date().getTime();
+          const distance = targetDate - now;
+
+          if (distance < 0) {
+            displayEl.innerText = "High School Completed! Time for Computer Science College!";
+            return;
+          }
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          
+          displayEl.innerText = `${days} Days and ${hours} Hours left to crush high school goals!`;
+        }
+        
+        updateDisplay();
+        setInterval(updateDisplay, 60000); 
       }
 
+      // 4. Fact Generator Logic
+      const facts = [
+        "The first computer programmer was a woman named Ada Lovelace, born in 1815.",
+        "The first computer 'bug' was an actual real moth found trapped in a relay by Grace Hopper in 1947.",
+        "About 90% of the world's currency only exists on computers now.",
+        "The first electronic computer, ENIAC, weighed more than 27 tons and took up an entire room.",
+        "The word 'computer' used to refer to humans who performed complex math calculations as a job.",
+        "Computer science legend Alan Turing invented the concept of the modern computer algorithm."
+      ];
+
+      function generateFact() {
+        const displayEl = document.getElementById("fact-display");
+        const boxEl = document.getElementById("fact-box");
+        const randomIndex = Math.floor(Math.random() * facts.length);
+        
+        displayEl.style.opacity = 0;
+        
+        setTimeout(() => {
+          displayEl.innerText = facts[randomIndex];
+          displayEl.style.opacity = 1;
+        }, 200);
+        
+        boxEl.classList.remove("pop-animation");
+        void boxEl.offsetWidth; 
+        boxEl.classList.add("pop-animation");
+      }
+
+      // 5. Complex High-Frequency System Performance Telemetry Ticker Engine
       function initTelemetry() {
-        let lastTime = performance.now(), frameCount = 0;
+        let lastTime = performance.now();
+        let frameCount = 0;
+        
         function tick() {
           frameCount++;
           const now = performance.now();
           if (now >= lastTime + 1000) {
-            document.getElementById("telemetry-fps").innerText = ((frameCount * 1000) / (now - lastTime)).toFixed(1) + " FPS";
-            frameCount = 0; lastTime = now;
-            document.getElementById("telemetry-ping").innerText = (Math.random() > 0.95 ? "54" : "14") + " ms";
-            document.getElementById("telemetry-mem").innerText = (42 + Math.random() * 3).toFixed(2) + " MB";
+            const currentFps = ((frameCount * 1000) / (now - lastTime)).toFixed(1);
+            document.getElementById("telemetry-fps").innerText = currentFps + " FPS";
+            frameCount = 0;
+            lastTime = now;
+            
+            // Generate standard network frame delay jitters
+            const randomPing = Math.floor(Math.random() * 8) + 14;
+            document.getElementById("telemetry-ping").innerText = (Math.random() > 0.96 ? randomPing + 45 : randomPing) + " ms";
+            
+            // Simulate variable heap allocations
+            const memoryUsage = (40 + Math.random() * 4).toFixed(2);
+            document.getElementById("telemetry-mem").innerText = memoryUsage + " MB";
+
+            // Decay general CPU simulation if game isn't processing
             if (!gameActive) {
-              let l = Math.floor(Math.random()*4)+6;
-              document.getElementById("telemetry-load").innerText = l+"%";
-              document.getElementById("telemetry-load-bar").style.width = l+"%";
+              const baseLoad = Math.floor(Math.random() * 5) + 8;
+              document.getElementById("telemetry-load").innerText = baseLoad + "%";
+              document.getElementById("telemetry-load-bar").style.width = baseLoad + "%";
             }
           }
           requestAnimationFrame(tick);
@@ -412,37 +815,65 @@
         requestAnimationFrame(tick);
       }
 
+      // 6. Advanced Valorant Moving Engine Mechanics
+      let score = 0;
+      let highScore = 0;
+      let gameActive = false;
+      let gameIntervalTimer;
+      let renderLoopId;
+      
+      // Target kinematics vectors
+      let targetX = 0, targetY = 0;
+      let velocityX = 0, velocityY = 0;
+      const targetColors = ["#ff4655", "#00f0ff", "#bd2ebd", "#ffb800"];
+
       function startAdvancedGame() {
-        score = 0; gameActive = true;
+        score = 0;
+        gameActive = true;
         document.getElementById("game-score").innerText = score;
         document.getElementById("start-game-btn").style.display = "none";
-        spawnNewTarget(); renderAdvancedFrame();
+        
+        // Spike system monitor workload to reflect asset mapping execution
+        document.getElementById("telemetry-load").innerText = "78%";
+        document.getElementById("telemetry-load-bar").style.width = "78%";
+
+        spawnNewTarget();
+        renderAdvancedFrame();
         
         gameIntervalTimer = setTimeout(() => {
           gameActive = false;
           cancelAnimationFrame(renderLoopId);
           document.getElementById("game-target").style.display = "none";
           document.getElementById("start-game-btn").style.display = "inline-block";
-          if (score > highScore) { highScore = score; document.getElementById("game-high").innerText = highScore; }
-          scoreHistory.shift(); scoreHistory.push(score);
-          drawPerformanceGraph();
-          logConsoleEvent(`Contract Concluded. Net Score: ${score}. Creds distribution updated.`);
-          alert(`Match over! Hitted ${score} targets.`);
-        }, 15000);
+          document.getElementById("start-game-btn").innerText = "Practice Again";
+          if (score > highScore) {
+            highScore = score;
+            document.getElementById("game-high").innerText = highScore;
+          }
+          alert(`Match over! You tracked and hit ${score} dynamic targets.`);
+        }, 20000); 
       }
 
       function spawnNewTarget() {
         if (!gameActive) return;
         const canvas = document.getElementById("game-canvas");
         const target = document.getElementById("game-target");
-        targetX = Math.floor(Math.random() * (canvas.clientWidth - 60)) + 30;
-        targetY = Math.floor(Math.random() * (canvas.clientHeight - 60)) + 30;
-        let s = 1.5 + (score * 0.08);
-        velocityX = (Math.random() > 0.5 ? 1 : -1) * s;
-        velocityY = (Math.random() > 0.5 ? 1 : -1) * s;
-        let size = Math.max(12, 32 - Math.floor(score / 2));
-        target.style.width = size + "px"; target.style.height = size + "px";
+        
+        const padding = 30;
+        targetX = Math.floor(Math.random() * (canvas.clientWidth - padding * 2)) + padding;
+        targetY = Math.floor(Math.random() * (canvas.clientHeight - padding * 2)) + padding;
+        
+        // Give vectors speed directions. Increments faster with high scores!
+        const speedMultiplier = 1.2 + (score * 0.1);
+        velocityX = (Math.random() > 0.5 ? 1 : -1) * speedMultiplier;
+        velocityY = (Math.random() > 0.5 ? 1 : -1) * speedMultiplier;
+
+        // Dynamic Sizing & Random Agent Colors
+        const targetSize = Math.max(14, 34 - Math.floor(score / 2));
+        target.style.width = targetSize + "px";
+        target.style.height = targetSize + "px";
         target.style.backgroundColor = targetColors[Math.floor(Math.random() * targetColors.length)];
+        
         target.style.display = "block";
       }
 
@@ -450,124 +881,164 @@
         if (!gameActive) return;
         const canvas = document.getElementById("game-canvas");
         const target = document.getElementById("game-target");
-        targetX += velocityX; targetY += velocityY;
+
+        // Step target coordinates forward
+        targetX += velocityX;
+        targetY += velocityY;
+
+        // Bounding box collision bounce triggers
         if (targetX <= 15 || targetX >= canvas.clientWidth - 15) velocityX *= -1;
         if (targetY <= 15 || targetY >= canvas.clientHeight - 15) velocityY *= -1;
-        target.style.left = targetX + "px"; target.style.top = targetY + "px";
-        let l = Math.min(99, 40 + (score * 2));
-        document.getElementById("telemetry-load").innerText = l+"%";
-        document.getElementById("telemetry-load-bar").style.width = l+"%";
+
+        // Reposition element center offsets
+        target.style.left = targetX + "px";
+        target.style.top = targetY + "px";
+
+        // Keeps load tracking bound to game performance metrics
+        const dynamicLoad = Math.min(98, 45 + (score * 2));
+        document.getElementById("telemetry-load").innerText = dynamicLoad + "%";
+        document.getElementById("telemetry-load-bar").style.width = dynamicLoad + "%";
+
         renderLoopId = requestAnimationFrame(renderAdvancedFrame);
       }
 
-      function hitTarget(e) {
-        if (!gameActive) return; e.stopPropagation();
-        score += scoreMultiplier; creds += 25;
+      function hitTarget(event) {
+        if (!gameActive) return;
+        event.stopPropagation(); 
+        score++;
         document.getElementById("game-score").innerText = score;
-        document.getElementById("game-creds").innerText = creds;
-        document.getElementById("game-canvas").style.backgroundColor = "rgba(0,255,100,0.1)";
-        setTimeout(() => document.getElementById("game-canvas").style.backgroundColor = "#15151c", 60);
+        
+        const canvas = document.getElementById("game-canvas");
+        canvas.style.backgroundColor = "rgba(0, 255, 100, 0.15)";
+        setTimeout(() => { canvas.style.backgroundColor = "#111116"; }, 70);
+
         spawnNewTarget();
       }
 
       function missShot() {
         if (!gameActive) return;
-        if (score > 0) { score--; document.getElementById("game-score").innerText = score; }
-        document.getElementById("game-canvas").style.backgroundColor = "rgba(255,70,85,0.1)";
-        setTimeout(() => document.getElementById("game-canvas").style.backgroundColor = "#15151c", 60);
-      }
-
-      // Soccer Keep-Up Physics Processing Engine
-      let bX = 150, bY = 40, bVX = 2, bVY = 0, juggleCount = 0, juggleLoopId = null;
-      const gravity = 0.22, bounceStiffness = -6.5;
-
-      function startJuggleLoop() {
-        if(juggleLoopId) return;
-        function jTick() {
-          bVY += gravity; bX += bVX; bY += bVY;
-          const box = document.getElementById("juggle-box");
-          const ball = document.getElementById("jiggle-ball");
-          if (bX <= 12 || bX >= box.clientWidth - 12) bVX *= -1;
-          if (bY >= box.clientHeight - 12) { bY = box.clientHeight - 12; bVY *= -0.5; juggleCount = 0; document.getElementById("juggle-score").innerText = juggleCount; }
-          ball.style.left = bX + "px"; ball.style.top = bY + "px";
-          juggleLoopId = requestAnimationFrame(jTick);
+        if (score > 0) {
+          score--;
+          document.getElementById("game-score").innerText = score;
+          
+          const canvas = document.getElementById("game-canvas");
+          canvas.style.backgroundColor = "rgba(255, 70, 85, 0.15)";
+          setTimeout(() => { canvas.style.backgroundColor = "#111116"; }, 70);
         }
-        juggleLoopId = requestAnimationFrame(jTick);
       }
 
-      function juggleBall(e) {
-        e.stopPropagation(); startJuggleLoop();
-        bVY = bounceStiffness; bVX = (Math.random() - 0.5) * 5;
-        juggleCount++; document.getElementById("juggle-score").innerText = juggleCount;
-        logConsoleEvent(`Soccer Core: Ball strike validation registered. Streak: ${juggleCount}`);
-      }
-      function resetBallDrop() { startJuggleLoop(); if(bY >= 140) { bY = 30; bVY = 0; } }
-
+      // 7. World Cup Live-Simulating Score Engine
       function updateWCObjects() {
         const matches = [
           { teams: "🇺🇸 USA vs 🏴󠁧󠁢󠁥󠁮󠁧󠁿 England", score: "2 - 1", time: "84'", live: true },
-          { teams: "🇲🇽 Mexico vs 🇩🇪 Germany", score: "1 - 1", time: "HT", live: true }
+          { teams: "🇲🇽 Mexico vs 🇩🇪 Germany", score: "1 - 1", time: "HT", live: true },
+          { teams: "🇨🇦 Canada vs 🇦🇷 Argentina", score: "0 - 2", time: "FT", live: false }
         ];
-        let h = `<div class="wc-dashboard">`;
-        matches.forEach(m => { h += `<div class="wc-match-row"><span>${m.teams}</span><span><strong>${m.score}</strong> ${m.live ? `<span class="wc-badge-live">${m.time}</span>` : `(${m.time})`}</span></div>`; });
-        document.getElementById("wc-dashboard-node").innerHTML = h + `</div>`;
+
+        let htmlString = `<div class="wc-dashboard">`;
+        matches.forEach(m => {
+          htmlString += `
+            <div class="wc-match-row">
+              <span>${m.teams}</span>
+              <span><strong>${m.score}</strong> ${m.live ? `<span class="wc-badge-live">${m.time}</span>` : `(${m.time})`}</span>
+            </div>`;
+        });
+        htmlString += `</div>`;
+        document.getElementById("wc-dashboard-node").innerHTML = htmlString;
       }
 
-      // Shell Shell Sub-Terminal Handler
-      function initConsole() {
-        logConsoleEvent("System shell verification initialized... Type /help to query instructions pipeline.");
+      // Quick-click Suggestion Handler
+      function injectChipPrompt(textValue) {
+        document.getElementById("ai-chat-input").value = textValue;
+        window.sendAiMessage();
       }
-      function logConsoleEvent(txt) {
-        const l = document.getElementById("console-logs");
-        l.innerHTML += `<div>[${new Date().toLocaleTimeString()}] ${txt}</div>`;
-        l.scrollTop = l.scrollHeight;
-      }
-      function executeShellCommand() {
-        const input = document.getElementById("console-input");
-        const cmd = input.value.trim().toLowerCase();
-        if(!cmd) return;
-        logConsoleEvent(`> ${input.value}`);
-        input.value = "";
 
-        if (cmd === '/help') {
-          logConsoleEvent("Available execution contexts: /help, /clear, /stats, /run-diagnostics");
-        } else if (cmd === '/clear') {
-          document.getElementById("console-logs").innerHTML = "";
-        } else if (cmd === '/stats') {
-          logConsoleEvent(`Academics Core Profile overall parameter standing: 93% average index.`);
-        } else if (cmd === '/run-diagnostics') {
-          logConsoleEvent("Analyzing asset buffers... Memory: PASS... Frame Matrix: PASS... Mainframe secured.");
-        } else {
-          logConsoleEvent(`❌ Command failure execution parameter syntax error: "${cmd}" unknown.`);
+      function getFallbackResponse(cleanQuery) {
+        if (cleanQuery.includes("project") || cleanQuery.includes("code") || cleanQuery.includes("github")) {
+          return "Bozi has multiple projects up! He has a solid GitHub footprint under 'fellabuzz' and two active Code.org App Lab apps built using Javascript arrays and UI states.";
         }
+        if (cleanQuery.includes("grade") || cleanQuery.includes("gpa") || cleanQuery.includes("average") || cleanQuery.includes("school")) {
+          return "Bozi attends Energy Technical High School where he has a stellar overall term average of 93%! His top classes include AP CS Principles (99%) and English 11 (102%).";
+        }
+        if (cleanQuery.includes("valorant") || cleanQuery.includes("tag") || cleanQuery.includes("game") || cleanQuery.includes("aim")) {
+          return "Bozi plays competitive Valorant under the riot tag fella#buzz! You can practice your target response times on his built-in Range Practice minigame on this screen.";
+        }
+        return "I am operating in local sandbox mode right now. Enter a Gemini API Key in the box above to activate live AI generation!";
       }
 
-      function injectChipPrompt(v) { document.getElementById("ai-chat-input").value = v; window.sendAiMessage(); }
-      function toggleAiChat() { const w = document.getElementById("ai-chat-window"); w.style.display = w.style.display === "flex" ? "none" : "flex"; }
+      function toggleAiChat() {
+        const win = document.getElementById("ai-chat-window");
+        win.style.display = (win.style.display === "flex") ? "none" : "flex";
+      }
     </script>
 
-    <!-- Google Gemini Orchestration Layer -->
+    <!-- Gemini API Call Handling Script Module -->
     <script type="module">
       import { GoogleGenAI } from "@google/genai";
-      const inst = "You are an assistant representing the student Bozi Dape. 9th grader at Energy Technical High School. CS Focus. Overall average 93%.";
-      
-      window.sendAiMessage = async function() {
-        const input = document.getElementById("ai-chat-input");
-        const box = document.getElementById("ai-chat-messages");
-        const q = input.value.trim(); if(!q) return;
 
-        const uDiv = document.createElement("div"); uDiv.className = "ai-message user"; uDiv.innerText = q; box.appendChild(uDiv);
-        input.value = ""; box.scrollTop = box.scrollHeight;
+      const systemInstruction = `
+        You are a helpful portfolio chat assistant representing the student Bozi Dape.
+        Keep answers helpful, conversational, and tailored to the context of his portfolio website.
+        Context information about Bozi:
+        - Grade: 9th grader at Energy Technical High School.
+        - Core Career Goal: Wants to pursue a degree in Computer Science at college after high school.
+        - Current Notable Courses: AP Computer Science Principles (Current Grade: 99%), English 11 (Current Grade: 102%), Geometry (Current Grade: 90%).
+        - Overall Term Average: 93%.
+        - Main Interests: Competitive gaming (Valorant profile tag: fella#buzz), soccer, and volleyball.
+        - Active Code Repositories: GitHub portfolio (username: fellabuzz), alongside custom interactive apps designed inside Code.org's App Lab framework.
+      `;
 
-        const bDiv = document.createElement("div"); bDiv.className = "ai-message bot"; bDiv.innerText = "Processing fallback shell array loop details...";
-        box.appendChild(bDiv); box.scrollTop = box.scrollHeight;
-
-        if (q.toLowerCase().includes("project")) {
-          bDiv.innerText = "Bozi handles distinct repository branches on GitHub ('fellabuzz') using arrays and interactive client listeners.";
-        } else if (q.toLowerCase().includes("grade")) {
-          bDiv.innerText = "Bozi stands at a 93% baseline matrix score, highlighting an advanced 99% profile parameter inside AP CSP.";
+      async function processGeminiQuery(userMessage, apiKey) {
+        try {
+          const ai = new GoogleGenAI({ apiKey: apiKey });
+          const response = await ai.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: userMessage,
+            config: {
+              systemInstruction: systemInstruction,
+              maxOutputTokens: 250,
+              temperature: 0.7
+            }
+          });
+          return response.text;
+        } catch (error) {
+          console.error("Gemini Live Error: ", error);
+          return "⚠️ Failed to fetch live response from Gemini. Check that your API key is accurate and active.";
         }
-        box.scrollTop = box.scrollHeight;
+      }
+
+      window.sendAiMessage = async function() {
+        const inputEl = document.getElementById("ai-chat-input");
+        const msgContainer = document.getElementById("ai-chat-messages");
+        const apiKey = document.getElementById("gemini-key").value.trim();
+        const query = inputEl.value.trim();
+        
+        if (!query) return;
+
+        // Render User Query
+        const userDiv = document.createElement("div");
+        userDiv.className = "ai-message user";
+        userDiv.innerText = query;
+        msgContainer.appendChild(userDiv);
+        inputEl.value = "";
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+
+        // Create temporary placeholder loading bubble
+        const botDiv = document.createElement("div");
+        botDiv.className = "ai-message bot";
+        botDiv.innerText = "...";
+        msgContainer.appendChild(botDiv);
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+
+        // Route requests based on credentials availability
+        if (apiKey) {
+          const liveResponse = await processGeminiQuery(query, apiKey);
+          botDiv.innerText = liveResponse;
+        } else {
+          botDiv.innerText = getFallbackResponse(query.toLowerCase());
+        }
+        
+        msgContainer.scrollTop = msgContainer.scrollHeight;
       }
     </script>
   </body>
