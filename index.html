@@ -1,13 +1,3 @@
-Here is your updated and fully working code.
-
-### What was fixed and changed:
-
-1. **Fixed the Interactivity Bug:** The original code had a variable typo inside `revealSecret()`. It tried to read `card.classList` instead of `cardElement.classList`. Replacing it with `cardElement` completely restores the click-to-reveal card functionality.
-2. **Added Project Links:** Your two Code.org App Lab project links have been neatly integrated directly into your projects section under **My Projects & Code**.
-3. **Added Valorant Profile & Stats:** The Valorant card now directly links out to your player profile tracker page. Additionally, your request for your player profile name (`fella#buzz`) and typical main roles has been fully stylized, while keeping the interactive element.
-4. **Kept Integrity:** The Code Honesty Declaration has been kept completely untouched at the top of your document as requested.
-
-```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -25,6 +15,7 @@ Here is your updated and fully working code.
         --btn-bg: #2E75B6;
         --btn-hover: #1F4E79;
         --link-color: #2E75B6;
+        --accent-glow: rgba(46, 117, 182, 0.2);
       }
 
       /* Dark Mode Variables applied via Javascript class */
@@ -37,6 +28,7 @@ Here is your updated and fully working code.
         --btn-bg: #4f9be3;
         --btn-hover: #6ba4e8;
         --link-color: #4f9be3;
+        --accent-glow: rgba(79, 155, 227, 0.3);
       }
 
       /* Layout Styles using CSS Variables */
@@ -83,18 +75,19 @@ Here is your updated and fully working code.
         gap: 15px;
         margin: 15px 0;
       }
+      
       .interactive-card {
         background: var(--card-bg);
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
+        transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
         border-left: 4px solid var(--h2-color);
       }
       .interactive-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px var(--accent-glow);
       }
       
       /* Toggle view configuration for click actions */
@@ -116,6 +109,23 @@ Here is your updated and fully working code.
         background: rgba(255,255,255,0.05);
       }
 
+      /* Tracker Badge Styling */
+      .tracker-badge {
+        display: inline-block;
+        margin-top: 8px;
+        background: var(--btn-bg);
+        color: white !important;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+        transition: background 0.2s, transform 0.2s;
+      }
+      .tracker-badge:hover {
+        background: var(--btn-hover);
+        transform: scale(1.03);
+        text-decoration: none;
+      }
+
       /* Generator Card Styling */
       .generator-box {
         background: var(--card-bg);
@@ -126,10 +136,12 @@ Here is your updated and fully working code.
         margin: 20px 0;
         transition: background 0.3s, transform 0.3s;
       }
+      
       .generator-box p {
         font-size: 1.2rem;
         font-style: italic;
         min-height: 50px;
+        transition: opacity 0.2s ease-in-out;
       }
       .generator-btn {
         background-color: var(--btn-bg);
@@ -146,6 +158,43 @@ Here is your updated and fully working code.
       }
       .generator-btn:active {
         transform: scale(0.95);
+      }
+
+      /* Aim Trainer Minigame Styles */
+      .game-container {
+        background: var(--card-bg);
+        border: 2px solid var(--h2-color);
+        border-radius: 8px;
+        padding: 15px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      .game-canvas {
+        width: 100%;
+        height: 200px;
+        background: #111;
+        position: relative;
+        overflow: hidden;
+        border-radius: 6px;
+        margin-top: 10px;
+        cursor: crosshair;
+      }
+      .game-target {
+        width: 24px;
+        height: 24px;
+        background: #ff4655; /* Valorant Red */
+        border: 3px solid white;
+        border-radius: 50%;
+        position: absolute;
+        display: none;
+        transform: translate(-50%, -50%);
+        transition: transform 0.1s;
+      }
+      .game-stats {
+        display: flex;
+        justify-content: space-around;
+        font-weight: bold;
+        margin-bottom: 8px;
       }
 
       /* Animation Effect class for Fact Box triggers */
@@ -183,7 +232,7 @@ Here is your updated and fully working code.
     <h1>Hi, I'm Bozi Dape!</h1>
 
     <h2>About Me</h2>
-    <p>I'm in 9th grade at Energy Technical High School.</p>
+    <p>I'm a 9th-grade student at Energy Technical High School. I am deeply passionate about technology and computing; I am currently taking <strong>AP Computer Science Principles (AP CSP)</strong> along with advanced courses to challenge myself. My ultimate goal is to pursue a degree in <strong>Computer Science</strong> at college after high school and build a future within the tech industry.</p>
 
     <h2>My Interests (Click card to reveal!)</h2>
     <div class="grid-container">
@@ -191,8 +240,8 @@ Here is your updated and fully working code.
         <strong>🎮 Valorant Profile: fella#buzz</strong>
         <p class="secret-text">
           Current main: Duelist or Initiator role. Practicing aiming daily!<br>
-          <a href="https://tracker.gg/valorant/profile/riot/fella%23buzz/overview?platform=pc&playlist=unrated&season=ce2783e8-44fc-dd48-3da3-33b5ba6c4a22" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">
-            Click here to view my tracker stats! 📈
+          <a class="tracker-badge" href="https://tracker.gg/valorant/profile/riot/fella%23buzz/overview?platform=pc&playlist=unrated&season=ce2783e8-44fc-dd48-3da3-33b5ba6c4a22" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation();">
+            View Live Tracker Stats 📈
           </a>
         </p>
       </div>
@@ -227,6 +276,18 @@ Here is your updated and fully working code.
       <li>Code.org App Lab Project 1: <a href="https://studio.code.org/projects/applab/08dcf837-0a8b-42e1-aefd-ce4a3db59864" target="_blank" rel="noopener noreferrer">View App</a></li>
       <li>Code.org App Lab Project 2: <a href="https://studio.code.org/projects/applab/7d1fd0ef-75a5-4440-8706-25c53c7eda1c" target="_blank" rel="noopener noreferrer">View App</a></li>
     </ul>
+
+    <h2>🎯 Range Practice (Mini Aim Trainer)</h2>
+    <div class="game-container">
+      <div class="game-stats">
+        <div>Score: <span id="game-score">0</span></div>
+        <div>High Score: <span id="game-high">0</span></div>
+      </div>
+      <button class="generator-btn" id="start-game-btn" onclick="startGame()">Start Training</button>
+      <div class="game-canvas" id="game-canvas" onclick="missShot()">
+        <div class="game-target" id="game-target" onclick="hitTarget(event)"></div>
+      </div>
+    </div>
 
     <script>
       // 1. Theme Toggle Logic (System Aware)
@@ -294,15 +355,77 @@ Here is your updated and fully working code.
         const boxEl = document.getElementById("fact-box");
         const randomIndex = Math.floor(Math.random() * facts.length);
         
-        displayEl.innerText = facts[randomIndex];
+        displayEl.style.opacity = 0;
         
-        // Triggers the pop CSS animation
+        setTimeout(() => {
+          displayEl.innerText = facts[randomIndex];
+          displayEl.style.opacity = 1;
+        }, 200);
+        
         boxEl.classList.remove("pop-animation");
-        void boxEl.offsetWidth; // Trigger reflow to restart animation
+        void boxEl.offsetWidth; 
         boxEl.classList.add("pop-animation");
+      }
+
+      // 5. Mini Aim Trainer Logic
+      let score = 0;
+      let highScore = 0;
+      let gameActive = false;
+      let gameTimer;
+
+      function startGame() {
+        score = 0;
+        gameActive = true;
+        document.getElementById("game-score").innerText = score;
+        document.getElementById("start-game-btn").style.display = "none";
+        moveTarget();
+        
+        // Game round lasts 15 seconds
+        gameTimer = setTimeout(() => {
+          gameActive = false;
+          document.getElementById("game-target").style.display = "none";
+          document.getElementById("start-game-btn").style.display = "inline-block";
+          document.getElementById("start-game-btn").innerText = "Practice Again";
+          if (score > highScore) {
+            highScore = score;
+            document.getElementById("game-high").innerText = highScore;
+          }
+          alert(`Training complete! You hit ${score} targets.`);
+        }, 15000);
+      }
+
+      function moveTarget() {
+        if (!gameActive) return;
+        const canvas = document.getElementById("game-canvas");
+        const target = document.getElementById("game-target");
+        
+        const padding = 20;
+        const maxX = canvas.clientWidth - padding * 2;
+        const maxY = canvas.clientHeight - padding * 2;
+        
+        const randomX = Math.floor(Math.random() * maxX) + padding;
+        const randomY = Math.floor(Math.random() * maxY) + padding;
+        
+        target.style.left = randomX + "px";
+        target.style.top = randomY + "px";
+        target.style.display = "block";
+      }
+
+      function hitTarget(event) {
+        if (!gameActive) return;
+        event.stopPropagation(); // Prevents counting as a miss click on the background canvas
+        score++;
+        document.getElementById("game-score").innerText = score;
+        moveTarget();
+      }
+
+      function missShot() {
+        if (!gameActive) return;
+        if (score > 0) {
+          score--;
+          document.getElementById("game-score").innerText = score;
+        }
       }
     </script>
   </body>
 </html>
-
-```
